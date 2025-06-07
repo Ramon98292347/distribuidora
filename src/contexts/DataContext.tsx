@@ -99,7 +99,14 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
       }
 
       console.log('Products loaded:', data?.length || 0);
-      setProducts(data || []);
+      const formattedProducts = data?.map(product => ({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        stock: product.stock || 0,
+        image: product.image
+      })) || [];
+      setProducts(formattedProducts);
     } catch (error) {
       console.error('Error loading products:', error);
       toast({
@@ -120,11 +127,11 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
           sale_items (
             product_id,
             quantity,
-            price,
+            unit_price,
             products(name)
           )
         `)
-        .order('date', { ascending: false });
+        .order('sale_date', { ascending: false });
 
       if (salesError) {
         console.error('Error loading sales:', salesError);
@@ -138,16 +145,16 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
 
       const formattedSales: Sale[] = salesData?.map(sale => ({
         id: sale.id,
-        date: sale.date || '',
-        total: sale.total,
+        date: sale.sale_date || '',
+        total: sale.total_amount,
         paymentMethod: sale.payment_method,
-        clientName: sale.client_name || undefined,
+        clientName: sale.notes?.replace('Cliente: ', '') || undefined,
         clientId: sale.client_id || undefined,
         products: sale.sale_items?.map(item => ({
           productId: item.product_id || '',
           productName: item.products?.name || 'Produto Desconhecido',
           quantity: item.quantity,
-          price: item.price
+          price: item.unit_price
         })) || []
       })) || [];
 
@@ -194,11 +201,11 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
         id: creditSale.id,
         clientId: creditSale.client_id,
         clientName: creditSale.client_name,
-        date: creditSale.date || '',
-        total: creditSale.total,
-        description: creditSale.description || undefined,
-        isPaid: creditSale.is_paid,
-        paidAt: creditSale.paid_at || undefined,
+        date: creditSale.created_at || '',
+        total: creditSale.total_amount,
+        description: creditSale.notes || undefined,
+        isPaid: creditSale.status === 'paid',
+        paidAt: creditSale.updated_at || undefined,
         products: creditSale.credit_sale_items?.map(item => ({
           productId: item.product_id || '',
           productName: item.products?.name || 'Produto Desconhecido',
@@ -314,9 +321,9 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
   const updateProductStock = async (productId: string, newStock: number) => {
     try {
       const { error } = await supabase
-        .from('products')
-        .update({ stock: newStock })
-        .eq('id', productId);
+      .from('products')
+      .update({ stock: newStock })
+      .eq('id', productId);
 
       if (error) {
         console.error('Error updating stock:', error);
@@ -335,11 +342,11 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
       const { data: saleData, error: saleError } = await supabase
         .from('sales')
         .insert([{
-          date: sale.date,
-          total: sale.total,
+          sale_date: sale.date,
+          total_amount: sale.total,
           payment_method: sale.paymentMethod,
-          client_name: sale.clientName,
-          client_id: sale.clientId
+          client_id: sale.clientId || null,
+          notes: sale.clientName ? `Cliente: ${sale.clientName}` : null
         }])
         .select()
         .single();
@@ -358,7 +365,8 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
         sale_id: saleData.id,
         product_id: product.productId,
         quantity: product.quantity,
-        price: product.price
+        unit_price: product.price,
+        total_price: product.quantity * product.price
       }));
 
       const { error: itemsError } = await supabase
@@ -399,22 +407,7 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
 
   const deleteSale = async (id: string) => {
     try {
-      // First delete sale items
-      const { error: itemsError } = await supabase
-        .from('sale_items')
-        .delete()
-        .eq('sale_id', id);
-
-      if (itemsError) {
-        toast({
-          title: "Erro ao deletar itens da venda",
-          description: itemsError.message,
-          variant: "destructive",
-        });
-        return;
-      }
-
-      // Then delete the sale
+      // Delete the sale (sale_items will be deleted automatically due to CASCADE)
       const { error: saleError } = await supabase
         .from('sales')
         .delete()
@@ -422,7 +415,7 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
 
       if (saleError) {
         toast({
-          title: "Erro ao deletar venda",
+          title: "Erro ao excluir venda",
           description: saleError.message,
           variant: "destructive",
         });
@@ -431,13 +424,13 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
 
       await loadSales();
       toast({
-        title: "Venda deletada!",
+        title: "Venda excluída!",
         description: "Venda foi removida com sucesso.",
       });
     } catch (error) {
       console.error('Error deleting sale:', error);
       toast({
-        title: "Erro ao deletar venda",
+        title: "Erro ao excluir venda",
         description: "Ocorreu um erro inesperado.",
         variant: "destructive",
       });
@@ -452,10 +445,9 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
         .insert([{
           client_id: creditSale.clientId,
           client_name: creditSale.clientName,
-          date: creditSale.date,
-          total: creditSale.total,
-          description: creditSale.description,
-          is_paid: false
+          total_amount: creditSale.total,
+          notes: creditSale.description,
+          status: 'pending'
         }])
         .select()
         .single();
@@ -585,11 +577,28 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
 
   const markCreditSaleAsPaid = async (id: string) => {
     try {
+      // Primeiro, buscar o valor total da venda
+      const { data: creditSale, error: fetchError } = await supabase
+        .from('credit_sales')
+        .select('total_amount')
+        .eq('id', id)
+        .single();
+
+      if (fetchError) {
+        toast({
+          title: "Erro ao buscar venda",
+          description: fetchError.message,
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Atualizar o status para 'paid' e paid_amount para o valor total
       const { error } = await supabase
         .from('credit_sales')
         .update({
-          is_paid: true,
-          paid_at: new Date().toISOString()
+          status: 'paid',
+          paid_amount: creditSale.total_amount
         })
         .eq('id', id);
 
