@@ -7,11 +7,12 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Wine, Loader2 } from 'lucide-react';
 
 const Login = () => {
   const [loginData, setLoginData] = useState({ email: '', password: '' });
-  const [registerData, setRegisterData] = useState({ email: '', password: '', name: '' });
+  const [registerData, setRegisterData] = useState({ email: '', password: '', name: '', role: 'user' as 'admin' | 'user' });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const { login, register } = useAuth();
@@ -38,13 +39,13 @@ const Login = () => {
     setIsLoading(true);
     setError('');
 
-    const result = await register(registerData.email, registerData.password, registerData.name);
+    const result = await register(registerData.email, registerData.password, registerData.name, registerData.role);
     
     if (result.error) {
       setError(result.error);
     } else {
       // Clear form and switch to login tab
-      setRegisterData({ email: '', password: '', name: '' });
+      setRegisterData({ email: '', password: '', name: '', role: 'user' });
     }
     
     setIsLoading(false);
@@ -155,6 +156,22 @@ const Login = () => {
                     onChange={(e) => setRegisterData({ ...registerData, password: e.target.value })}
                     required
                   />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="register-role">Tipo de Usuário</Label>
+                  <Select
+                    value={registerData.role}
+                    onValueChange={(value: 'admin' | 'user') => setRegisterData({ ...registerData, role: value })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione o tipo de usuário" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="user">Usuário</SelectItem>
+                      <SelectItem value="admin">Administrador</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 {error && (

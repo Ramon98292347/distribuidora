@@ -19,7 +19,9 @@ async function testTables() {
   'purchases', 
   'purchase_items',
   'stock_movements',
-  'product_categories'
+  'product_categories',
+  'credit_sales',
+  'credit_sale_items'
 ];
   
   for (const table of tables) {

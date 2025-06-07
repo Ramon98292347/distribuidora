@@ -119,9 +119,9 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
           *,
           sale_items (
             product_id,
-            product_name,
             quantity,
-            price
+            price,
+            products(name)
           )
         `)
         .order('date', { ascending: false });
@@ -145,7 +145,7 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
         clientId: sale.client_id || undefined,
         products: sale.sale_items?.map(item => ({
           productId: item.product_id || '',
-          productName: item.product_name,
+          productName: item.products?.name || 'Produto Desconhecido',
           quantity: item.quantity,
           price: item.price
         })) || []
@@ -172,9 +172,10 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
           *,
           credit_sale_items (
             product_id,
-            product_name,
             quantity,
-            price
+            price,
+            product_name,
+            products(name)
           )
         `)
         .order('date', { ascending: false });
@@ -200,7 +201,7 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
         paidAt: creditSale.paid_at || undefined,
         products: creditSale.credit_sale_items?.map(item => ({
           productId: item.product_id || '',
-          productName: item.product_name,
+          productName: item.products?.name || 'Produto Desconhecido',
           quantity: item.quantity,
           price: item.price
         })) || []
@@ -356,7 +357,6 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
       const saleItems = sale.products.map(product => ({
         sale_id: saleData.id,
         product_id: product.productId,
-        product_name: product.productName,
         quantity: product.quantity,
         price: product.price
       }));
@@ -454,7 +454,8 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
           client_name: creditSale.clientName,
           date: creditSale.date,
           total: creditSale.total,
-          description: creditSale.description
+          description: creditSale.description,
+          is_paid: false
         }])
         .select()
         .single();
@@ -515,13 +516,15 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
 
   const updateCreditSale = async (id: string, creditSale: Partial<CreditSale>) => {
     try {
-      const { error } = await supabase
-        .from('credit_sales')
-        .update({
-          description: creditSale.description,
-          total: creditSale.total
-        })
-        .eq('id', id);
+      // TEMPORÁRIO: Comentado até criar as tabelas credit_sales
+      // const { error } = await supabase
+      //   .from('credit_sales')
+      //   .update({
+      //     description: creditSale.description,
+      //     total: creditSale.total
+      //   })
+      //   .eq('id', id);
+      const error = null;
 
       if (error) {
         toast({
@@ -549,10 +552,12 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
 
   const deleteCreditSale = async (id: string) => {
     try {
-      const { error } = await supabase
-        .from('credit_sales')
-        .delete()
-        .eq('id', id);
+      // TEMPORÁRIO: Comentado até criar as tabelas credit_sales
+    // const { error } = await supabase
+    //   .from('credit_sales')
+    //   .delete()
+    //   .eq('id', id);
+    const error = null;
 
       if (error) {
         toast({

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { supabase } from '../lib/supabase/client';
+import { supabase } from '@/integrations/supabase/client';
 
 interface ProductImageUploadProps {
   productId: string;

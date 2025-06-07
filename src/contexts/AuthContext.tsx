@@ -51,25 +51,37 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const loadUserProfile = async (authUser: User) => {
     try {
       const { data: profile, error } = await supabase
-        .from('profiles')
+        .from('users')
         .select('*')
-        .eq('id', authUser.id)
+        .eq('email', authUser.email)
         .single();
 
       if (error) {
         console.error('Error loading profile:', error);
+        // Se não encontrar o usuário na tabela users, criar um usuário básico
+        setUser({
+          id: authUser.id,
+          username: authUser.email?.split('@')[0] || 'Usuário',
+          type: 'user'
+        });
         return;
       }
 
       if (profile) {
         setUser({
           id: profile.id,
-          username: profile.name,
-          type: profile.type as 'admin' | 'user'
+          username: profile.name || profile.email,
+          type: profile.role as 'admin' | 'user'
         });
       }
     } catch (error) {
       console.error('Error loading user profile:', error);
+      // Fallback: criar usuário básico se houver erro
+      setUser({
+        id: authUser.id,
+        username: authUser.email?.split('@')[0] || 'Usuário',
+        type: 'user'
+      });
     }
   };
 
@@ -96,9 +108,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const register = async (email: string, password: string, name: string) => {
+  const register = async (email: string, password: string, name: string, role: 'admin' | 'user' = 'user') => {
     try {
-      const { error } = await supabase.auth.signUp({
+      // Primeiro, criar o usuário no Supabase Auth
+      const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -108,8 +121,25 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
       });
 
-      if (error) {
-        return { error: error.message };
+      if (authError) {
+        return { error: authError.message };
+      }
+
+      // Se o usuário foi criado com sucesso, inserir na tabela users
+      if (authData.user) {
+        const { error: insertError } = await supabase
+          .from('users')
+          .insert({
+            id: authData.user.id,
+            email: email,
+            name: name,
+            role: role
+          });
+
+        if (insertError) {
+          console.error('Error inserting user profile:', insertError);
+          // Não retornar erro aqui, pois o usuário já foi criado no Auth
+        }
       }
 
       toast({

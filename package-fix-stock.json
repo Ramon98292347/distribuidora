@@ -1,0 +1,13 @@
+{
+  "name": "fix-stock-column-script",
+  "version": "1.0.0",
+  "description": "Script para corrigir a coluna stock na tabela products",
+  "main": "fix-stock-column.js",
+  "type": "module",
+  "scripts": {
+    "start": "node fix-stock-column.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.49.8"
+  }
+}
