@@ -91,7 +91,7 @@ const Receipt = () => {
             </div>
           </div>
           <CardTitle className="text-2xl font-bold">
-            Distribuidora do Jeser
+            DistribuiPro
           </CardTitle>
           <p className="text-blue-100 print:text-gray-600">
             Sua distribuidora de confiança
@@ -212,8 +212,8 @@ const Receipt = () => {
             </h3>
             <p className="text-sm">
               {isCreditSale && !sale.isPaid 
-                ? 'Aguardamos o pagamento. A Distribuidora do Jeser agradece sua confiança.'
-                : 'Volte sempre! A Distribuidora do Jeser agradece sua confiança.'
+                ? 'Aguardamos o pagamento. A DistribuiPro agradece sua confiança.'
+                : 'Volte sempre. A DistribuiPro agradece sua confiança.'
               }
             </p>
           </div>
@@ -221,7 +221,7 @@ const Receipt = () => {
           {/* Rodapé */}
           <div className="mt-8 pt-4 border-t border-gray-200 text-center text-xs text-gray-500">
             <p>Este recibo foi gerado automaticamente pelo sistema</p>
-            <p>Distribuidora do Jeser - Sistema de Gestão v1.0</p>
+            <p>DistribuiPro - Sistema de Gestão v1.0</p>
           </div>
         </CardContent>
       </Card>

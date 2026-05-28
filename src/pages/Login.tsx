@@ -1,18 +1,24 @@
-
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Wine, Loader2 } from 'lucide-react';
 
 const Login = () => {
+  const [searchParams] = useSearchParams();
+  const defaultTab = searchParams.get('tab') === 'register' ? 'register' : 'login';
+
   const [loginData, setLoginData] = useState({ email: '', password: '' });
-  const [registerData, setRegisterData] = useState({ email: '', password: '', name: '', role: 'user' as 'admin' | 'user' });
+  const [registerData, setRegisterData] = useState({
+    email: '',
+    password: '',
+    name: '',
+    companyName: ''
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const { login, register } = useAuth();
@@ -24,13 +30,13 @@ const Login = () => {
     setError('');
 
     const result = await login(loginData.email, loginData.password);
-    
+
     if (result.error) {
       setError(result.error);
     } else {
       navigate('/dashboard');
     }
-    
+
     setIsLoading(false);
   };
 
@@ -39,48 +45,52 @@ const Login = () => {
     setIsLoading(true);
     setError('');
 
-    const result = await register(registerData.email, registerData.password, registerData.name, registerData.role);
-    
+    const result = await register(
+      registerData.email,
+      registerData.password,
+      registerData.name,
+      registerData.companyName
+    );
+
     if (result.error) {
       setError(result.error);
     } else {
-      // Clear form and switch to login tab
-      setRegisterData({ email: '', password: '', name: '', role: 'user' });
+      setRegisterData({ email: '', password: '', name: '', companyName: '' });
     }
-    
+
     setIsLoading(false);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-amber-100 flex items-center justify-center p-4">
       <Card className="w-full max-w-md shadow-xl">
         <CardHeader className="text-center space-y-4">
           <div className="flex items-center justify-center space-x-3">
-            <div className="p-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg">
+            <div className="p-3 bg-gradient-to-r from-orange-600 to-amber-600 rounded-lg">
               <Wine className="h-8 w-8 text-white" />
             </div>
           </div>
           <div>
-            <CardTitle className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Distribuidora do Jeser
+            <CardTitle className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">
+              DistribuiPro
             </CardTitle>
             <CardDescription>
-              Sistema de Gestão de Vendas
+              Plataforma SaaS para gestão de distribuidoras
             </CardDescription>
           </div>
         </CardHeader>
-        
+
         <CardContent>
-          <Tabs defaultValue="login" className="space-y-4">
+          <Tabs defaultValue={defaultTab} className="space-y-4">
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="login">Login</TabsTrigger>
-              <TabsTrigger value="register">Cadastro</TabsTrigger>
+              <TabsTrigger value="login">Entrar</TabsTrigger>
+              <TabsTrigger value="register">Cadastro de teste</TabsTrigger>
             </TabsList>
-            
+
             <TabsContent value="login">
               <form onSubmit={handleLogin} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
+                  <Label htmlFor="email">E-mail</Label>
                   <Input
                     id="email"
                     type="email"
@@ -90,7 +100,7 @@ const Login = () => {
                     required
                   />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="password">Senha</Label>
                   <Input
@@ -109,9 +119,9 @@ const Login = () => {
                   </div>
                 )}
 
-                <Button 
-                  type="submit" 
-                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600" 
+                <Button
+                  type="submit"
+                  className="w-full bg-gradient-to-r from-orange-600 to-amber-600"
                   disabled={isLoading}
                 >
                   {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
@@ -119,11 +129,11 @@ const Login = () => {
                 </Button>
               </form>
             </TabsContent>
-            
+
             <TabsContent value="register">
               <form onSubmit={handleRegister} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="register-name">Nome</Label>
+                  <Label htmlFor="register-name">Seu nome</Label>
                   <Input
                     id="register-name"
                     type="text"
@@ -133,9 +143,21 @@ const Login = () => {
                     required
                   />
                 </div>
-                
+
                 <div className="space-y-2">
-                  <Label htmlFor="register-email">Email</Label>
+                  <Label htmlFor="register-company">Nome da distribuidora</Label>
+                  <Input
+                    id="register-company"
+                    type="text"
+                    placeholder="Ex.: Distribuidora Central"
+                    value={registerData.companyName}
+                    onChange={(e) => setRegisterData({ ...registerData, companyName: e.target.value })}
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="register-email">E-mail</Label>
                   <Input
                     id="register-email"
                     type="email"
@@ -145,7 +167,7 @@ const Login = () => {
                     required
                   />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="register-password">Senha</Label>
                   <Input
@@ -154,25 +176,14 @@ const Login = () => {
                     placeholder="Crie uma senha"
                     value={registerData.password}
                     onChange={(e) => setRegisterData({ ...registerData, password: e.target.value })}
+                    minLength={6}
                     required
                   />
                 </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="register-role">Tipo de Usuário</Label>
-                  <Select
-                    value={registerData.role}
-                    onValueChange={(value: 'admin' | 'user') => setRegisterData({ ...registerData, role: value })}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecione o tipo de usuário" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="user">Usuário</SelectItem>
-                      <SelectItem value="admin">Administrador</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+
+                <p className="text-xs text-slate-600">
+                  Você terá 7 dias grátis para testar a plataforma.
+                </p>
 
                 {error && (
                   <div className="text-sm text-red-600 bg-red-50 p-3 rounded-md">
@@ -180,13 +191,13 @@ const Login = () => {
                   </div>
                 )}
 
-                <Button 
-                  type="submit" 
-                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600" 
+                <Button
+                  type="submit"
+                  className="w-full bg-gradient-to-r from-orange-600 to-amber-600"
                   disabled={isLoading}
                 >
                   {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  Cadastrar
+                  Criar conta de teste
                 </Button>
               </form>
             </TabsContent>

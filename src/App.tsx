@@ -7,6 +7,7 @@ import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { DataProvider } from "./contexts/DataContext";
 import { ClientProvider } from "./contexts/ClientContext";
 import Login from "./pages/Login";
+import Landing from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
 import Products from "./pages/Products";
 import Clients from "./pages/Clients";
@@ -25,6 +26,7 @@ const AppRoutes = () => {
 
   return (
     <Routes>
+      <Route path="/" element={<Landing />} />
       <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <Login />} />
       <Route path="/dashboard" element={
         <ProtectedRoute>
@@ -56,7 +58,7 @@ const AppRoutes = () => {
           <Receipt />
         </ProtectedRoute>
       } />
-      <Route path="/" element={<Navigate to="/dashboard" />} />
+      <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );
 };
