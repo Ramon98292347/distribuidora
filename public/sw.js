@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = "distribuipro-v2";
+﻿const CACHE_NAME = "distribuipro-v3";
 const APP_SHELL = [
   "/",
   "/index.html",
