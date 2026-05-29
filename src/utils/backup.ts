@@ -1,4 +1,4 @@
-// Sistema de backup e recuperação de dados
+// Sistema de backup e recuperaï¿½ï¿½o de dados
 import { supabase } from '@/integrations/supabase/client';
 
 export interface BackupData {
@@ -105,7 +105,7 @@ class BackupService {
       const backupSize = new Blob([JSON.stringify(backupData)]).size;
       backupData.metadata.backup_size = this.formatFileSize(backupSize);
       
-      console.log(`âœ… Backup concluído: ${totalRecords} registros, ${backupData.metadata.backup_size}`);
+      console.log(`âœ… Backup concluï¿½do: ${totalRecords} registros, ${backupData.metadata.backup_size}`);
       
       return backupData;
     } catch (error) {
@@ -154,10 +154,10 @@ class BackupService {
       
       // Validar estrutura do backup
       if (!this.validateBackupStructure(backupData)) {
-        throw new Error('Arquivo de backup inválido ou corrompido');
+        throw new Error('Arquivo de backup invÃ¡lido ou corrompido');
       }
       
-      console.log(`âœ… Backup importado: versão ${backupData.version}, ${backupData.metadata.total_records} registros`);
+      console.log(`âœ… Backup importado: versï¿½o ${backupData.version}, ${backupData.metadata.total_records} registros`);
       
       return backupData;
     } catch (error) {
@@ -172,7 +172,7 @@ class BackupService {
     tablesToRestore?: string[];
   } = {}): Promise<void> {
     try {
-      console.log('Iniciando restauração do backup...');
+      console.log('Iniciando restaura??o do backup...');
       
       const { clearExisting = false, tablesToRestore } = options;
       const tablesToProcess = tablesToRestore || Object.keys(backupData.tables);
@@ -194,7 +194,7 @@ class BackupService {
             const { error: deleteError } = await supabase
               .from(tableName)
               .delete()
-              .neq('id', '00000000-0000-0000-0000-000000000000'); // Deletar todos exceto um ID impossível
+              .neq('id', '00000000-0000-0000-0000-000000000000'); // Deletar todos exceto um ID impossï¿½vel
             
             if (deleteError) {
               console.warn(`Aviso ao limpar tabela ${tableName}:`, deleteError);
@@ -223,7 +223,7 @@ class BackupService {
         }
       }
       
-      console.log('ðŸŽ‰ Restauração do backup concluída!');
+      console.log('ðŸŽ‰ Restauraï¿½ï¿½o do backup concluï¿½da!');
     } catch (error) {
       console.error('Erro ao restaurar backup:', error);
       throw new Error(`Falha ao restaurar backup: ${error}`);
@@ -259,23 +259,23 @@ class BackupService {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   }
 
-  // Criar backup automático (pode ser chamado periodicamente)
+  // Criar backup automÃ¡tico (pode ser chamado periodicamente)
   async createAutomaticBackup(): Promise<void> {
     try {
-      console.log('Executando backup automático...');
+      console.log('Executando backup automÃ¡tico...');
       
       const backupData = await this.createFullBackup({
         dateRange: {
-          start: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(), // Últimos 30 dias
+          start: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(), // ?ltimos 30 dias
           end: new Date().toISOString()
         }
       });
       
       await this.exportBackupToFile(backupData, `backup_automatico_${Date.now()}.json`);
       
-      console.log('âœ… Backup automático concluído');
+      console.log('âœ… Backup automÃ¡tico concluï¿½do');
     } catch (error) {
-      console.error('Erro no backup automático:', error);
+      console.error('Erro no backup automÃ¡tico:', error);
     }
   }
 
@@ -310,7 +310,7 @@ class BackupService {
         }
       }
       
-      // Verificações específicas de integridade
+      // Verificaï¿½ï¿½es especÃ­ficas de integridade
       
       // 1. Verificar se existem vendas sem itens
       const { data: salesWithoutItems } = await supabase
@@ -325,7 +325,7 @@ class BackupService {
         issues.push(`${salesWithoutItems.length} vendas encontradas sem itens`);
       }
       
-      // 2. Verificar se existem itens de venda órfãos
+      // 2. Verificar se existem itens de venda ?Ã³rfÃ£os
       const { data: orphanSaleItems } = await supabase
         .from('sale_items')
         .select(`
@@ -335,7 +335,7 @@ class BackupService {
         .is('sales.id', null);
       
       if (orphanSaleItems && orphanSaleItems.length > 0) {
-        issues.push(`${orphanSaleItems.length} itens de venda órfãos encontrados`);
+        issues.push(`${orphanSaleItems.length} itens de venda ?Ã³rfÃ£os encontrados`);
       }
       
       // 3. Verificar produtos com estoque negativo
@@ -348,7 +348,7 @@ class BackupService {
         issues.push(`${negativeStock.length} produtos com estoque negativo`);
       }
       
-      console.log(`Verificação de integridade concluída: ${issues.length} problemas encontrados`);
+      console.log(`Verifica??o de integridade concluÃ­da: ${issues.length} problemas encontrados`);
       
       return {
         isValid: issues.length === 0,
@@ -356,20 +356,20 @@ class BackupService {
         summary
       };
     } catch (error) {
-      console.error('Erro na verificação de integridade:', error);
+      console.error('Erro na verificaï¿½ï¿½o de integridade:', error);
       return {
         isValid: false,
-        issues: [`Erro na verificação: ${error}`],
+        issues: [`Erro na verificaï¿½ï¿½o: ${error}`],
         summary
       };
     }
   }
 }
 
-// InstÃ¢ncia singleton do serviço de backup
+// InstÃ¢ncia singleton do serviÃ§o de backup
 export const backupService = new BackupService();
 
-// Funções de conveniência para uso direto
+// Fun??es de conveniÃªncia para uso direto
 export const createBackup = (options?: BackupOptions) => backupService.createFullBackup(options);
 export const exportBackup = (backupData: BackupData, filename?: string) => backupService.exportBackupToFile(backupData, filename);
 export const importBackup = (file: File) => backupService.importBackupFromFile(file);

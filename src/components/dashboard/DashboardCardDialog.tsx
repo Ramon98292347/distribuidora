@@ -86,9 +86,9 @@ const DashboardCardDialog = ({ isOpen, onOpenChange, cardType, title }: Dashboar
       case 'month-revenue':
         return (
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Vendas do Mês</h3>
+            <h3 className="text-lg font-semibold">Vendas do MÃªs</h3>
             {monthSales.length === 0 ? (
-              <p className="text-gray-500">Nenhuma venda este mês</p>
+              <p className="text-gray-500">Nenhuma venda este mÃªs</p>
             ) : (
               <div className="space-y-2 max-h-60 overflow-y-auto">
                 {monthSales.map((sale) => (
@@ -183,7 +183,7 @@ const DashboardCardDialog = ({ isOpen, onOpenChange, cardType, title }: Dashboar
         );
 
       default:
-        return <p>Informações não disponíveis</p>;
+        return <p>Informa??es nÃ£o disponÃ­veis</p>;
     }
   };
 

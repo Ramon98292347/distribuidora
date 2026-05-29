@@ -1,7 +1,7 @@
 # GUIA_PARA_IA.md
 
 ## Objetivo
-Este arquivo serve como contexto r�pido para qualquer IA que precise trabalhar neste projeto.
+Este arquivo serve como contexto rápido para qualquer IA que precise trabalhar neste projeto.
 
 ## Nome do sistema
 ComercialPro
@@ -21,48 +21,48 @@ npm run preview
 ```
 
 ## Estrutura de pastas
-- `src/pages`: telas principais (Dashboard, Produtos, Vendas, Clientes, Relat�rios, Contas a Pagar)
-- `src/components`: componentes reutilizaveis e UI
+- `src/pages`: telas principais (Dashboard, Produtos, Vendas, Clientes, Relatórios, Contas a Pagar)
+- `src/components`: componentes reutilizáveis e UI
 - `src/contexts`: estados globais (Auth, Data, Client)
 - `src/integrations/supabase`: client e tipos do Supabase
-- `src/utils`: funcoes utilitarias
+- `src/utils`: fun??es utilitárias
 - `src/types`: tipagens compartilhadas
 - `supabase`: scripts SQL
 
-## Fluxo de autenticacao
-- Autenticacao via `AuthContext`
+## Fluxo de autentica??o
+- Autentica??o via `AuthContext`
 - Rotas protegidas em `src/App.tsx` com `ProtectedRoute`
 - Layout principal em `src/components/Layout.tsx`
 
 ## Dados e regras importantes
 - Produtos, vendas e vendas fiado usam `DataContext`
-- Contas a pagar atualmente estao em armazenamento local (localStorage) via:
+- Contas a pagar atualmente estão em armazenamento local (localStorage) via:
   - `src/utils/accountsPayable.ts`
   - `src/types/accountsPayable.ts`
   - `src/pages/AccountsPayable.tsx`
 - Existe SQL pronto para migrar contas a pagar ao Supabase em:
   - `supabase/accounts_payable.sql`
 
-## Navegacao e responsividade
+## Navega??o e responsividade
 - Desktop grande: sidebar lateral
-- Mobile e tablet: menu inferior com botao `Mais`
-- Ajustes de breakpoint estao em `src/components/Layout.tsx`
+- Mobile e tablet: menu inferior com botão `Mais`
+- Ajustes de breakpoint estão em `src/components/Layout.tsx`
 
-## Convencoes de alteracao
-1. Manter TypeScript sem `any` desnecessario.
-2. Preservar padrao visual atual (Tailwind + componentes existentes).
-3. Evitar criar logica duplicada: reaproveitar contexts e utils.
-4. Em alteracoes de fluxo, validar mobile e desktop.
+## Conven??es de altera??o
+1. Manter TypeScript sem `any` desnecessário.
+2. Preservar padrão visual atual (Tailwind + componentes existentes).
+3. Evitar criar lógica duplicada: reaproveitar contexts e utils.
+4. Em altera??es de fluxo, validar mobile e desktop.
 5. Rodar build antes de finalizar:
    - `npm run build`
 
-## Checklist minimo antes de concluir tarefa
-1. Alteracao compila sem erro.
-2. Rotas nao quebraram.
+## Checklist mínimo antes de concluir tarefa
+1. Altera??o compila sem erro.
+2. Rotas não quebraram.
 3. Tela funciona no mobile e desktop.
-4. Nao introduzir referencias externas antigas (ex: Lovable/GPT Engineer).
+4. Não introduzir referências externas antigas (ex: Lovable/GPT Engineer).
 
-## Arquivos-chave para come�ar r�pido
+## Arquivos-chave para começar rápido
 - `src/App.tsx`
 - `src/components/Layout.tsx`
 - `src/contexts/DataContext.tsx`
@@ -70,10 +70,8 @@ npm run preview
 - `src/pages/Dashboard.tsx`
 - `src/pages/AccountsPayable.tsx`
 
-## Observacoes
+## Observa??es
 - Se for migrar contas a pagar para Supabase, atualizar:
   1. Tipos em `src/integrations/supabase/types.ts`
   2. Leitura/escrita hoje feita em localStorage
   3. Dashboard para usar consulta real ao banco
-
-

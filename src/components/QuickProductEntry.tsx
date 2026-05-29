@@ -1,4 +1,4 @@
-
+﻿
 import { useState } from 'react';
 import { useData } from '@/contexts/DataContext';
 import { useAuth } from '@/contexts/AuthContext';
@@ -63,14 +63,14 @@ const QuickProductEntry = () => {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      {/* Cadastro R�pido */}
+      {/* Cadastro Rápido */}
       <Card className="shadow-lg border-0">
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
             <div className="p-2 bg-gradient-to-r from-green-500 to-emerald-500 rounded-lg">
               <Plus className="h-5 w-5 text-white" />
             </div>
-            <span>Cadastro R�pido</span>
+            <span>Cadastro Rápido</span>
           </CardTitle>
           <CardDescription>
             Adicione novos produtos rapidamente
@@ -90,7 +90,7 @@ const QuickProductEntry = () => {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="quick-price">Pre�o (R$)</Label>
+                <Label htmlFor="quick-price">Preço (R$)</Label>
                 <Input
                   id="quick-price"
                   type="number"
@@ -121,7 +121,7 @@ const QuickProductEntry = () => {
         </CardContent>
       </Card>
 
-      {/* Atualiza��o de Estoque */}
+      {/* Atualização de Estoque */}
       <Card className="shadow-lg border-0">
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">

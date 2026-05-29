@@ -1,4 +1,4 @@
-import * as React from "react"
+ï»¿import * as React from "react"
 import * as LabelPrimitive from "@radix-ui/react-label"
 import { Slot } from "@radix-ui/react-slot"
 import {
@@ -57,7 +57,7 @@ const useFormField = () => {
     name: fieldContext.name,
     formItemId: `${id}-form-item`,
     formDescriptionId: `${id}-form-item-description`,
-    formMêssageId: `${id}-form-item-message`,
+    formMessageId: `${id}-form-item-message`,
     ...fieldState,
   }
 }
@@ -105,7 +105,7 @@ const FormControl = React.forwardRef<
   React.ElementRef<typeof Slot>,
   React.ComponentPropsWithoutRef<typeof Slot>
 >(({ ...props }, ref) => {
-  const { error, formItemId, formDescriptionId, formMêssageId } = useFormField()
+  const { error, formItemId, formDescriptionId, formMessageId } = useFormField()
 
   return (
     <Slot
@@ -114,7 +114,7 @@ const FormControl = React.forwardRef<
       aria-describedby={
         !error
           ? `${formDescriptionId}`
-          : `${formDescriptionId} ${formMêssageId}`
+          : `${formDescriptionId} ${formMessageId}`
       }
       aria-invalid={!!error}
       {...props}
@@ -140,11 +140,11 @@ const FormDescription = React.forwardRef<
 })
 FormDescription.displayName = "FormDescription"
 
-const FormMêssage = React.forwardRef<
+const FormMessage = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
 >(({ className, children, ...props }, ref) => {
-  const { error, formMêssageId } = useFormField()
+  const { error, formMessageId } = useFormField()
   const body = error ? String(error?.message) : children
 
   if (!body) {
@@ -154,7 +154,7 @@ const FormMêssage = React.forwardRef<
   return (
     <p
       ref={ref}
-      id={formMêssageId}
+      id={formMessageId}
       className={cn("text-sm font-medium text-destructive", className)}
       {...props}
     >
@@ -162,7 +162,7 @@ const FormMêssage = React.forwardRef<
     </p>
   )
 })
-FormMêssage.displayName = "FormMêssage"
+FormMessage.displayName = "FormMessage"
 
 export {
   useFormField,
@@ -171,7 +171,6 @@ export {
   FormLabel,
   FormControl,
   FormDescription,
-  FormMêssage,
+  FormMessage,
   FormField,
 }
-

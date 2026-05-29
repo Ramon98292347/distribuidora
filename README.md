@@ -1,11 +1,11 @@
 # ComercialPro
 
-Sistema web para gestao de neg�cio com foco em:
+Sistema web para gestão de negócio com foco em:
 
 - Cadastro e controle de produtos
-- Vendas a vista e fiado
+- Vendas ? vista e fiado
 - Clientes
-- Relat�rios
+- Relatórios
 - Contas a pagar
 
 ## Tecnologias
@@ -24,9 +24,9 @@ npm install
 npm run dev
 ```
 
-Aplicacao padrao em `http://localhost:8080`.
+Aplica??o padrão em `http://localhost:8080`.
 
-## Build de producao
+## Build de produ??o
 
 ```bash
 npm run build
@@ -35,9 +35,7 @@ npm run preview
 
 ## Estrutura principal
 
-- `src/pages`: paginas do sistema
+- `src/pages`: páginas do sistema
 - `src/components`: componentes visuais
 - `src/contexts`: estados globais
-- `supabase`: scripts SQL e configuracoes
-
-
+- `supabase`: scripts SQL e configura??es

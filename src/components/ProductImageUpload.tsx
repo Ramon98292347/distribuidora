@@ -36,12 +36,12 @@ const ProductImageUpload: React.FC<ProductImageUploadProps> = ({
         throw new Error('Por favor, selecione apenas arquivos de imagem.');
       }
 
-      // Validar tamanho (máximo 5MB)
+      // Validar tamanho (mÃ¡ximo 5MB)
       if (file.size > 5 * 1024 * 1024) {
-        throw new Error('A imagem deve ter no máximo 5MB.');
+        throw new Error('A imagem deve ter no mÃ¡ximo 5MB.');
       }
 
-      // Gerar nome único para o arquivo
+      // Gerar nome ?nico para o arquivo
       const fileExt = file.name.split('.').pop();
       const fileName = `${productId}_${Date.now()}.${fileExt}`;
       const filePath = `product-images/${fileName}`;
@@ -55,14 +55,14 @@ const ProductImageUpload: React.FC<ProductImageUploadProps> = ({
         throw uploadError;
       }
 
-      // Obter URL pública
+      // Obter URL pÃºblica
       const { data: urlData } = supabase.storage
         .from('product-images')
         .getPublicUrl(filePath);
 
       const imageUrl = urlData.publicUrl;
 
-      // Salvar informações no banco de dados
+      // Salvar informa??es no banco de dados
       const { data: dbData, error: dbError } = await supabase
         .from('product_images')
         .insert({
@@ -71,7 +71,7 @@ const ProductImageUpload: React.FC<ProductImageUploadProps> = ({
           image_name: file.name,
           image_size: file.size,
           image_type: file.type,
-          is_primary: images.length === 0, // Primeira imagem é primária
+          is_primary: images.length === 0, // Primeira imagem ï¿½ primÃ¡ria
           alt_text: `Imagem do produto ${productId}`
         })
         .select()
@@ -138,13 +138,13 @@ const ProductImageUpload: React.FC<ProductImageUploadProps> = ({
 
   const setPrimaryImage = async (imageId: string) => {
     try {
-      // Remover primária de todas as imagens
+      // Remover primÃ¡ria de todas as imagens
       await supabase
         .from('product_images')
         .update({ is_primary: false })
         .eq('product_id', productId);
 
-      // Definir nova imagem primária
+      // Definir nova imagem primÃ¡ria
       const { error } = await supabase
         .from('product_images')
         .update({ is_primary: true })
@@ -160,10 +160,10 @@ const ProductImageUpload: React.FC<ProductImageUploadProps> = ({
         is_primary: img.id === imageId
       })));
 
-      alert('Imagem primária definida!');
+      alert('Imagem primÃ¡ria definida!');
     } catch (error: any) {
-      console.error('Erro ao definir imagem primária:', error);
-      alert(`Erro ao definir imagem primária: ${error.message}`);
+      console.error('Erro ao definir imagem primÃ¡ria:', error);
+      alert(`Erro ao definir imagem primÃ¡ria: ${error.message}`);
     }
   };
 
@@ -224,7 +224,7 @@ const ProductImageUpload: React.FC<ProductImageUploadProps> = ({
               <div style={{ fontSize: '48px', marginBottom: '10px' }}>ðŸ“·</div>
               <p>Clique aqui ou arraste imagens para enviar</p>
               <p style={{ fontSize: '12px', color: '#666' }}>
-                Máximo {maxImages - images.length} imagens restantes â€¢ Máximo 5MB por imagem
+                Mï¿½ximo {maxImages - images.length} imagens restantes â€¢ Mï¿½ximo 5MB por imagem
               </p>
             </div>
           )}

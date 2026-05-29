@@ -78,7 +78,7 @@ const ProductDialog = ({
             {editingProduct ? 'Editar Produto' : 'Novo Produto'}
           </DialogTitle>
           <DialogDescription>
-            {editingProduct ? 'Atualize as informações do produto' : 'Adicione um novo produto ao estoque'}
+            {editingProduct ? 'Atualize as informa??es do produto' : 'Adicione um novo produto ao estoque'}
           </DialogDescription>
         </DialogHeader>
 
@@ -95,7 +95,7 @@ const ProductDialog = ({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="price">Preço de Venda (R$)</Label>
+            <Label htmlFor="price">PreÃ§o de Venda (R$)</Label>
             <Input
               id="price"
               type="number"

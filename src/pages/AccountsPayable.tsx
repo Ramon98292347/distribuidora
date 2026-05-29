@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useMemo, useState } from 'react';
+﻿import { FormEvent, useEffect, useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -28,10 +28,10 @@ const defaultForm = {
 const paymentMethods: { value: AccountsPayablePaymentMethod; label: string }[] = [
   { value: 'dinheiro', label: 'Dinheiro' },
   { value: 'pix', label: 'PIX' },
-  { value: 'cartao_debito', label: 'Cart�o de D�bito' },
-  { value: 'cartao_credito', label: 'Cart�o de Cr�dito' },
+  { value: 'cartao_debito', label: 'Cartão de Débito' },
+  { value: 'cartao_credito', label: 'Cartão de Crédito' },
   { value: 'boleto', label: 'Boleto' },
-  { value: 'transferencia', label: 'Transfer�ncia' },
+  { value: 'transferencia', label: 'Transferência' },
   { value: 'outro', label: 'Outro' },
 ];
 
@@ -93,8 +93,8 @@ const AccountsPayablePage = () => {
 
     if (!form.description || !form.supplier || !form.category || !form.dueDate || !form.value) {
       toast({
-        title: 'Campos obrigat�rios',
-        description: 'Preencha descri��o, fornecedor, categoria, valor e vencimento.',
+        title: 'Campos obrigatórios',
+        description: 'Preencha descrição, fornecedor, categoria, valor e vencimento.',
         variant: 'destructive',
       });
       return;
@@ -123,7 +123,7 @@ const AccountsPayablePage = () => {
       return;
     }
 
-    toast({ title: editingId ? 'Conta atualizada' : 'Conta cadastrada', description: 'Opera��o realizada com sucesso.' });
+    toast({ title: editingId ? 'Conta atualizada' : 'Conta cadastrada', description: 'Operação realizada com sucesso.' });
     resetForm();
     await loadItems();
   };
@@ -190,20 +190,20 @@ const AccountsPayablePage = () => {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Contas a Pagar</h1>
-        <p className="text-gray-600">Controle financeiro das sa�das do neg�cio.</p>
+        <p className="text-gray-600">Controle financeiro das saídas do negócio.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card className="border-0 shadow-lg">
-          <CardHeader className="pb-2"><CardTitle className="text-sm">Pagas no M�s</CardTitle></CardHeader>
+          <CardHeader className="pb-2"><CardTitle className="text-sm">Pagas no Mês</CardTitle></CardHeader>
           <CardContent><p className="text-2xl font-bold text-emerald-600">R$ {monthOutput.paid.toFixed(2)}</p></CardContent>
         </Card>
         <Card className="border-0 shadow-lg">
-          <CardHeader className="pb-2"><CardTitle className="text-sm">Abertas no M�s</CardTitle></CardHeader>
+          <CardHeader className="pb-2"><CardTitle className="text-sm">Abertas no Mês</CardTitle></CardHeader>
           <CardContent><p className="text-2xl font-bold text-amber-600">R$ {monthOutput.open.toFixed(2)}</p></CardContent>
         </Card>
         <Card className="border-0 shadow-lg">
-          <CardHeader className="pb-2"><CardTitle className="text-sm">Vencidas no M�s</CardTitle></CardHeader>
+          <CardHeader className="pb-2"><CardTitle className="text-sm">Vencidas no Mês</CardTitle></CardHeader>
           <CardContent><p className="text-2xl font-bold text-red-600">R$ {monthOutput.overdue.toFixed(2)}</p></CardContent>
         </Card>
       </div>
@@ -216,16 +216,16 @@ const AccountsPayablePage = () => {
         <CardContent>
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <div className="space-y-2"><Label>Descri��o</Label><Input value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} /></div>
+              <div className="space-y-2"><Label>Descrição</Label><Input value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} /></div>
               <div className="space-y-2"><Label>Fornecedor</Label><Input value={form.supplier} onChange={(e) => setForm({ ...form, supplier: e.target.value })} /></div>
               <div className="space-y-2"><Label>Categoria</Label><Input value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} /></div>
               <div className="space-y-2"><Label>Valor (R$)</Label><Input type="number" min="0.01" step="0.01" value={form.value} onChange={(e) => setForm({ ...form, value: e.target.value })} /></div>
               <div className="space-y-2"><Label>Vencimento</Label><Input type="date" value={form.dueDate} onChange={(e) => setForm({ ...form, dueDate: e.target.value })} /></div>
-              <div className="space-y-2"><Label>Observa��o</Label><Input value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} /></div>
+              <div className="space-y-2"><Label>Observação</Label><Input value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} /></div>
             </div>
             <div className="flex flex-wrap gap-2">
               <Button type="submit" disabled={saving}>{saving ? 'Salvando...' : editingId ? 'Atualizar Conta' : 'Cadastrar Conta'}</Button>
-              {editingId && <Button type="button" variant="outline" onClick={resetForm}>Cancelar edi��o</Button>}
+              {editingId && <Button type="button" variant="outline" onClick={resetForm}>Cancelar edição</Button>}
             </div>
           </form>
         </CardContent>
@@ -234,7 +234,7 @@ const AccountsPayablePage = () => {
       <Card className="border-0 shadow-lg">
         <CardHeader>
           <CardTitle>Filtros</CardTitle>
-          <CardDescription>Filtre contas por per�odo, status, categoria e fornecedor.</CardDescription>
+          <CardDescription>Filtre contas por período, status, categoria e fornecedor.</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
@@ -265,7 +265,7 @@ const AccountsPayablePage = () => {
 
       <Card className="border-0 shadow-lg">
         <CardHeader>
-          <CardTitle>Contas do Per�odo</CardTitle>
+          <CardTitle>Contas do Período</CardTitle>
           <CardDescription>{filteredItems.length} registro(s) encontrado(s).</CardDescription>
         </CardHeader>
         <CardContent>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useData } from '@/contexts/DataContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from '@/hooks/use-toast';
@@ -64,7 +64,7 @@ const Products = () => {
       updateProduct(editingProduct.id, productData);
       toast({
         title: "Produto atualizado!",
-        description: "As informa��es do produto foram atualizadas com sucesso",
+        description: "As informações do produto foram atualizadas com sucesso",
       });
     } else {
       addProduct(productData);
@@ -111,7 +111,7 @@ const Products = () => {
 
     deleteProduct(productId);
     toast({
-      title: "Produto exclu�do!",
+      title: "Produto excluído!",
       description: "O produto foi removido do estoque",
     });
   };
@@ -134,8 +134,8 @@ const Products = () => {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Gest�o de Produtos</h1>
-          <p className="text-gray-600">Gerencie o cat�logo de produtos da neg�cio</p>
+          <h1 className="text-2xl font-bold text-gray-900">Gestão de Produtos</h1>
+          <p className="text-gray-600">Gerencie o catálogo de produtos do negócio</p>
         </div>
 
         <ProductDialog

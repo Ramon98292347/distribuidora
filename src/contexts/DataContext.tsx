@@ -424,7 +424,7 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
 
       await loadSales();
       toast({
-        title: "Venda excluída!",
+        title: "Venda excluï¿½da!",
         description: "Venda foi removida com sucesso.",
       });
     } catch (error) {
@@ -508,7 +508,7 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
 
   const updateCreditSale = async (id: string, creditSale: Partial<CreditSale>) => {
     try {
-      // TEMPORÃRIO: Comentado até criar as tabelas credit_sales
+      // TEMPORÃRIO: Comentado atï¿½ criar as tabelas credit_sales
       // const { error } = await supabase
       //   .from('credit_sales')
       //   .update({
@@ -544,7 +544,7 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
 
   const deleteCreditSale = async (id: string) => {
     try {
-      // TEMPORÃRIO: Comentado até criar as tabelas credit_sales
+      // TEMPORÃRIO: Comentado atï¿½ criar as tabelas credit_sales
     // const { error } = await supabase
     //   .from('credit_sales')
     //   .delete()
