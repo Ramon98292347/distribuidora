@@ -74,11 +74,11 @@ const BackupManager: React.FC<BackupManagerProps> = ({ onBackupComplete }) => {
       return;
     }
 
-    const confirmMessage = clearExisting 
-      ? 'ATENÃ‡ÃƒO: Isso irÃ¡ APAGAR todos os dados existentes e restaurar do backup. Tem certeza?'
-      : 'Isso irÃ¡ restaurar os dados do backup (mantendo dados existentes). Continuar?';
+    const confirmMêssage = clearExisting 
+      ? 'ATENÇÃO: Isso irá APAGAR todos os dados existentes e restaurar do backup. Tem certeza?'
+      : 'Isso irá restaurar os dados do backup (mantendo dados existentes). Continuar?';
     
-    if (!window.confirm(confirmMessage)) {
+    if (!window.confirm(confirmMêssage)) {
       return;
     }
 
@@ -104,13 +104,13 @@ const BackupManager: React.FC<BackupManagerProps> = ({ onBackupComplete }) => {
       setIntegrityResult(result);
       
       const message = result.isValid 
-        ? 'VerificaÃ§Ã£o concluÃ­da: Dados Ã­ntegros!' 
-        : `VerificaÃ§Ã£o concluÃ­da: ${result.issues.length} problemas encontrados`;
+        ? 'Verificação concluída: Dados íntegros!' 
+        : `Verificação concluída: ${result.issues.length} problemas encontrados`;
       
       onBackupComplete?.(result.isValid, message);
     } catch (error: any) {
-      console.error('Erro na verificaÃ§Ã£o de integridade:', error);
-      onBackupComplete?.(false, `Erro na verificaÃ§Ã£o: ${error.message}`);
+      console.error('Erro na verificação de integridade:', error);
+      onBackupComplete?.(false, `Erro na verificação: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -173,11 +173,11 @@ const BackupManager: React.FC<BackupManagerProps> = ({ onBackupComplete }) => {
         </div>
       )}
 
-      {/* SeÃ§Ã£o de CriaÃ§Ã£o de Backup */}
+      {/* Seção de Criação de Backup */}
       <div style={{ backgroundColor: '#f5f5f5', padding: '20px', borderRadius: '8px', marginBottom: '20px' }}>
         <h3>ğŸ“¤ Criar Backup</h3>
         
-        {/* SeleÃ§Ã£o de Tabelas */}
+        {/* Seleção de Tabelas */}
         <div style={{ marginBottom: '15px' }}>
           <h4>Tabelas para incluir no backup:</h4>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '10px' }}>
@@ -193,7 +193,7 @@ const BackupManager: React.FC<BackupManagerProps> = ({ onBackupComplete }) => {
             ))}
           </div>
           <p style={{ fontSize: '12px', color: '#666', marginTop: '5px' }}>
-            Se nenhuma tabela for selecionada, todas serÃ£o incluÃ­das.
+            Se nenhuma tabela for selecionada, todas serão incluídas.
           </p>
         </div>
 
@@ -211,7 +211,7 @@ const BackupManager: React.FC<BackupManagerProps> = ({ onBackupComplete }) => {
               />
             </label>
             <label>
-              AtÃ©:
+              Até:
               <input
                 type="date"
                 value={backupOptions.dateRange?.end || ''}
@@ -227,7 +227,7 @@ const BackupManager: React.FC<BackupManagerProps> = ({ onBackupComplete }) => {
             </button>
           </div>
           <p style={{ fontSize: '12px', color: '#666', marginTop: '5px' }}>
-            Aplica-se apenas a vendas, compras e movimentaÃ§Ãµes de estoque.
+            Aplica-se apenas a vendas, compras e movimentações de estoque.
           </p>
         </div>
 
@@ -248,7 +248,7 @@ const BackupManager: React.FC<BackupManagerProps> = ({ onBackupComplete }) => {
         </button>
       </div>
 
-      {/* SeÃ§Ã£o de ImportaÃ§Ã£o/RestauraÃ§Ã£o */}
+      {/* Seção de Importação/Restauração */}
       <div style={{ backgroundColor: '#fff3e0', padding: '20px', borderRadius: '8px', marginBottom: '20px' }}>
         <h3>ğŸ“¥ Importar e Restaurar Backup</h3>
         
@@ -287,7 +287,7 @@ const BackupManager: React.FC<BackupManagerProps> = ({ onBackupComplete }) => {
           <div style={{ backgroundColor: 'white', padding: '15px', borderRadius: '4px', marginBottom: '15px' }}>
             <h4>Backup Carregado:</h4>
             <p><strong>Data:</strong> {new Date(lastBackup.timestamp).toLocaleString('pt-BR')}</p>
-            <p><strong>VersÃ£o:</strong> {lastBackup.version}</p>
+            <p><strong>Versão:</strong> {lastBackup.version}</p>
             <p><strong>Registros:</strong> {lastBackup.metadata.total_records}</p>
             <p><strong>Tamanho:</strong> {lastBackup.metadata.backup_size}</p>
             
@@ -326,9 +326,9 @@ const BackupManager: React.FC<BackupManagerProps> = ({ onBackupComplete }) => {
         )}
       </div>
 
-      {/* SeÃ§Ã£o de VerificaÃ§Ã£o de Integridade */}
+      {/* Seção de Verificação de Integridade */}
       <div style={{ backgroundColor: '#e8f5e8', padding: '20px', borderRadius: '8px', marginBottom: '20px' }}>
-        <h3>ğŸ” VerificaÃ§Ã£o de Integridade</h3>
+        <h3>ğŸ” Verificação de Integridade</h3>
         
         <button
           onClick={handleCheckIntegrity}
@@ -348,7 +348,7 @@ const BackupManager: React.FC<BackupManagerProps> = ({ onBackupComplete }) => {
 
         {integrityResult && (
           <div style={{ backgroundColor: 'white', padding: '15px', borderRadius: '4px' }}>
-            <h4>Resultado da VerificaÃ§Ã£o:</h4>
+            <h4>Resultado da Verificação:</h4>
             
             <div style={{ 
               padding: '10px', 
@@ -357,7 +357,7 @@ const BackupManager: React.FC<BackupManagerProps> = ({ onBackupComplete }) => {
               color: integrityResult.isValid ? '#155724' : '#721c24',
               marginBottom: '15px'
             }}>
-              {integrityResult.isValid ? 'âœ… Dados Ã­ntegros!' : `âŒ ${integrityResult.issues.length} problemas encontrados`}
+              {integrityResult.isValid ? 'âœ… Dados íntegros!' : `âŒ ${integrityResult.issues.length} problemas encontrados`}
             </div>
 
             {/* Resumo das Tabelas */}
@@ -396,15 +396,15 @@ const BackupManager: React.FC<BackupManagerProps> = ({ onBackupComplete }) => {
         )}
       </div>
 
-      {/* InformaÃ§Ãµes e Dicas */}
+      {/* Informações e Dicas */}
       <div style={{ backgroundColor: '#e3f2fd', padding: '20px', borderRadius: '8px' }}>
         <h3>ğŸ’¡ Dicas Importantes</h3>
         <ul style={{ margin: 0, paddingLeft: '20px' }}>
-          <li>FaÃ§a backups regulares dos seus dados</li>
-          <li>Teste a restauraÃ§Ã£o periodicamente</li>
+          <li>Faça backups regulares dos seus dados</li>
+          <li>Teste a restauração periodicamente</li>
           <li>Mantenha backups em locais seguros</li>
-          <li>Use a verificaÃ§Ã£o de integridade para detectar problemas</li>
-          <li>A opÃ§Ã£o "Substituir Todos os Dados" Ã© irreversÃ­vel</li>
+          <li>Use a verificação de integridade para detectar problemas</li>
+          <li>A opção "Substituir Todos os Dados" é irreversível</li>
         </ul>
       </div>
     </div>

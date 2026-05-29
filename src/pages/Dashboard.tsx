@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useData } from '@/contexts/DataContext';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -13,12 +13,40 @@ import {
 } from 'lucide-react';
 import QuickProductEntry from '@/components/QuickProductEntry';
 import DashboardCardDialog from '@/components/dashboard/DashboardCardDialog';
-import { loadAccountsPayable } from '@/utils/accountsPayable';
+import { supabase } from '@/integrations/supabase/client';
+import { AccountsPayable, AccountsPayablePaymentMethod, AccountsPayableStatus } from '@/types/accountsPayable';
+import { resolveStatusByDate } from '@/utils/accountsPayable';
 
 const Dashboard = () => {
   const { products, sales } = useData();
   const [selectedCard, setSelectedCard] = useState<{ type: string; title: string } | null>(null);
-  const accountsPayable = loadAccountsPayable();
+  const [accountsPayable, setAccountsPayable] = useState<AccountsPayable[]>([]);
+
+  useEffect(() => {
+    const loadAccountsPayable = async () => {
+      const { data } = await supabase.from('accounts_payable').select('*');
+      if (!data) return;
+
+      const mapped: AccountsPayable[] = data.map((item) => ({
+        id: item.id,
+        description: item.description,
+        supplier: item.supplier,
+        category: item.category,
+        value: Number(item.value),
+        dueDate: item.due_date,
+        status: resolveStatusByDate(item.status as AccountsPayableStatus, item.due_date),
+        paymentDate: item.payment_date,
+        paymentMethod: item.payment_method as AccountsPayablePaymentMethod | null,
+        notes: item.notes,
+        createdAt: item.created_at,
+        updatedAt: item.updated_at,
+      }));
+
+      setAccountsPayable(mapped);
+    };
+
+    loadAccountsPayable();
+  }, []);
 
   const today = new Date().toDateString();
   const thisWeek = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
@@ -49,13 +77,22 @@ const Dashboard = () => {
   const monthEnd = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).toISOString().slice(0, 10);
   const todayDate = new Date().toISOString().slice(0, 10);
 
-  const overduePayables = accountsPayable
-    .filter((item) => item.status !== 'paga' && item.dueDate < todayDate)
-    .sort((a, b) => a.dueDate.localeCompare(b.dueDate));
+  const overduePayables = useMemo(
+    () =>
+      accountsPayable
+        .filter((item) => item.status !== 'paga' && item.status !== 'cancelada' && item.dueDate < todayDate)
+        .sort((a, b) => a.dueDate.localeCompare(b.dueDate)),
+    [accountsPayable, todayDate],
+  );
 
-  const monthlyOutput = accountsPayable
-    .filter((item) => item.dueDate >= monthStart && item.dueDate <= monthEnd)
-    .reduce((sum, item) => sum + item.value, 0);
+  const monthlyOutput = useMemo(
+    () =>
+      accountsPayable
+        .filter((item) => item.status !== 'cancelada')
+        .filter((item) => item.dueDate >= monthStart && item.dueDate <= monthEnd)
+        .reduce((sum, item) => sum + item.value, 0),
+    [accountsPayable, monthEnd, monthStart],
+  );
 
   const cards = [
     {
@@ -69,15 +106,15 @@ const Dashboard = () => {
     {
       title: 'Receita da Semana',
       value: `R$ ${weekRevenue.toFixed(2)}`,
-      description: 'Ultimos 7 dias',
+      description: 'Últimos 7 dias',
       icon: Calendar,
       color: 'from-blue-500 to-cyan-500',
       type: 'week-revenue',
     },
     {
-      title: 'Receita do Mes',
+      title: 'Receita do Mês',
       value: `R$ ${monthRevenue.toFixed(2)}`,
-      description: 'Mes atual',
+      description: 'Mês atual',
       icon: TrendingUp,
       color: 'from-purple-500 to-violet-500',
       type: 'month-revenue',
@@ -107,9 +144,9 @@ const Dashboard = () => {
       type: 'products',
     },
     {
-      title: 'Saida do Mes',
+      title: 'Contas a Pagar (Mês)',
       value: `R$ ${monthlyOutput.toFixed(2)}`,
-      description: 'Contas a pagar do mes vigente',
+      description: 'Saídas do mês vigente',
       icon: HandCoins,
       color: 'from-rose-500 to-red-500',
       type: 'monthly-output',
@@ -152,7 +189,7 @@ const Dashboard = () => {
             </div>
             <span>Contas Vencidas</span>
           </CardTitle>
-          <CardDescription>Area separada com acesso rapido para quitacao</CardDescription>
+          <CardDescription>Área separada com acesso rápido para quitação</CardDescription>
         </CardHeader>
         <CardContent>
           {overduePayables.length === 0 ? (

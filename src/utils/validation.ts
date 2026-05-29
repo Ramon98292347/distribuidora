@@ -1,4 +1,4 @@
-// Utilit√°rios de valida√ß√£o para o sistema
+// Utilit·rios de validaÁ„o para o sistema
 
 export interface ValidationResult {
   isValid: boolean;
@@ -31,52 +31,52 @@ export interface SaleValidation {
   }>;
 }
 
-// Valida√ß√£o de produtos
+// ValidaÁ„o de produtos
 export const validateProduct = (product: ProductValidation): ValidationResult => {
   const errors: string[] = [];
 
-  // Nome obrigat√≥rio
+  // Nome obrigatÛrio
   if (!product.name || product.name.trim().length === 0) {
-    errors.push('Nome do produto √© obrigat√≥rio');
+    errors.push('Nome do produto È obrigatÛrio');
   } else if (product.name.trim().length < 2) {
     errors.push('Nome do produto deve ter pelo menos 2 caracteres');
   } else if (product.name.trim().length > 255) {
-    errors.push('Nome do produto deve ter no m√°ximo 255 caracteres');
+    errors.push('Nome do produto deve ter no m·ximo 255 caracteres');
   }
 
-  // Pre√ßo obrigat√≥rio e v√°lido
+  // PreÁo obrigatÛrio e v·lido
   if (product.price === undefined || product.price === null) {
-    errors.push('Pre√ßo √© obrigat√≥rio');
+    errors.push('PreÁo È obrigatÛrio');
   } else if (product.price < 0) {
-    errors.push('Pre√ßo deve ser maior ou igual a zero');
+    errors.push('PreÁo deve ser maior ou igual a zero');
   } else if (product.price > 999999.99) {
-    errors.push('Pre√ßo deve ser menor que R$ 999.999,99');
+    errors.push('PreÁo deve ser menor que R$ 999.999,99');
   }
 
   // Quantidade em estoque
   if (product.stock_quantity === undefined || product.stock_quantity === null) {
-    errors.push('Quantidade em estoque √© obrigat√≥ria');
+    errors.push('Quantidade em estoque È obrigatÛria');
   } else if (product.stock_quantity < 0) {
     errors.push('Quantidade em estoque deve ser maior ou igual a zero');
   } else if (!Number.isInteger(product.stock_quantity)) {
-    errors.push('Quantidade em estoque deve ser um n√∫mero inteiro');
+    errors.push('Quantidade em estoque deve ser um n˙mero inteiro');
   }
 
-  // Categoria obrigat√≥ria
+  // Categoria obrigatÛria
   if (!product.category || product.category.trim().length === 0) {
-    errors.push('Categoria √© obrigat√≥ria');
+    errors.push('Categoria È obrigatÛria');
   }
 
-  // Pre√ßo de custo (opcional, mas se informado deve ser v√°lido)
+  // PreÁo de custo (opcional, mas se informado deve ser v·lido)
   if (product.cost_price !== undefined && product.cost_price !== null) {
     if (product.cost_price < 0) {
-      errors.push('Pre√ßo de custo deve ser maior ou igual a zero');
+      errors.push('PreÁo de custo deve ser maior ou igual a zero');
     } else if (product.cost_price > product.price) {
-      errors.push('Pre√ßo de custo n√£o pode ser maior que o pre√ßo de venda');
+      errors.push('PreÁo de custo n„o pode ser maior que o preÁo de venda');
     }
   }
 
-  // Margem de lucro (opcional, mas se informada deve ser v√°lida)
+  // Margem de lucro (opcional, mas se informada deve ser v·lida)
   if (product.profit_margin !== undefined && product.profit_margin !== null) {
     if (product.profit_margin < 0) {
       errors.push('Margem de lucro deve ser maior ou igual a zero');
@@ -91,57 +91,57 @@ export const validateProduct = (product: ProductValidation): ValidationResult =>
   };
 };
 
-// Valida√ß√£o de clientes
+// ValidaÁ„o de clientes
 export const validateClient = (client: ClientValidation): ValidationResult => {
   const errors: string[] = [];
 
-  // Nome obrigat√≥rio
+  // Nome obrigatÛrio
   if (!client.name || client.name.trim().length === 0) {
-    errors.push('Nome do cliente √© obrigat√≥rio');
+    errors.push('Nome do cliente È obrigatÛrio');
   } else if (client.name.trim().length < 2) {
     errors.push('Nome do cliente deve ter pelo menos 2 caracteres');
   } else if (client.name.trim().length > 255) {
-    errors.push('Nome do cliente deve ter no m√°ximo 255 caracteres');
+    errors.push('Nome do cliente deve ter no m·ximo 255 caracteres');
   }
 
-  // Email (opcional, mas se informado deve ser v√°lido)
+  // Email (opcional, mas se informado deve ser v·lido)
   if (client.email && client.email.trim().length > 0) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(client.email)) {
-      errors.push('Email deve ter um formato v√°lido');
+      errors.push('Email deve ter um formato v·lido');
     }
   }
 
-  // Telefone (opcional, mas se informado deve ser v√°lido)
+  // Telefone (opcional, mas se informado deve ser v·lido)
   if (client.phone && client.phone.trim().length > 0) {
     const phoneRegex = /^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/;
     if (!phoneRegex.test(client.phone.replace(/\s/g, ''))) {
-      errors.push('Telefone deve ter um formato v√°lido (ex: (11) 99999-9999)');
+      errors.push('Telefone deve ter um formato v·lido (ex: (11) 99999-9999)');
     }
   }
 
-  // Documento (opcional, mas se informado deve ser v√°lido)
+  // Documento (opcional, mas se informado deve ser v·lido)
   if (client.document_number && client.document_number.trim().length > 0) {
     const cleanDoc = client.document_number.replace(/[^\d]/g, '');
     
     if (client.client_type === 'individual') {
-      // CPF deve ter 11 d√≠gitos
+      // CPF deve ter 11 dÌgitos
       if (cleanDoc.length !== 11) {
-        errors.push('CPF deve ter 11 d√≠gitos');
+        errors.push('CPF deve ter 11 dÌgitos');
       } else if (!isValidCPF(cleanDoc)) {
-        errors.push('CPF inv√°lido');
+        errors.push('CPF inv·lido');
       }
     } else if (client.client_type === 'company') {
-      // CNPJ deve ter 14 d√≠gitos
+      // CNPJ deve ter 14 dÌgitos
       if (cleanDoc.length !== 14) {
-        errors.push('CNPJ deve ter 14 d√≠gitos');
+        errors.push('CNPJ deve ter 14 dÌgitos');
       } else if (!isValidCNPJ(cleanDoc)) {
-        errors.push('CNPJ inv√°lido');
+        errors.push('CNPJ inv·lido');
       }
     }
   }
 
-  // Tipo de cliente obrigat√≥rio
+  // Tipo de cliente obrigatÛrio
   if (!client.client_type || !['individual', 'company'].includes(client.client_type)) {
     errors.push('Tipo de cliente deve ser "individual" ou "company"');
   }
@@ -152,39 +152,39 @@ export const validateClient = (client: ClientValidation): ValidationResult => {
   };
 };
 
-// Valida√ß√£o de vendas
+// ValidaÁ„o de vendas
 export const validateSale = (sale: SaleValidation): ValidationResult => {
   const errors: string[] = [];
 
-  // Cliente obrigat√≥rio
+  // Cliente obrigatÛrio
   if (!sale.client_id || sale.client_id.trim().length === 0) {
-    errors.push('Cliente √© obrigat√≥rio');
+    errors.push('Cliente È obrigatÛrio');
   }
 
-  // Itens obrigat√≥rios
+  // Itens obrigatÛrios
   if (!sale.items || sale.items.length === 0) {
-    errors.push('Pelo menos um item deve ser adicionado √† venda');
+    errors.push('Pelo menos um item deve ser adicionado ‡ venda');
   } else {
     sale.items.forEach((item, index) => {
-      // Produto obrigat√≥rio
+      // Produto obrigatÛrio
       if (!item.product_id || item.product_id.trim().length === 0) {
-        errors.push(`Item ${index + 1}: Produto √© obrigat√≥rio`);
+        errors.push(`Item ${index + 1}: Produto È obrigatÛrio`);
       }
 
-      // Quantidade obrigat√≥ria e v√°lida
+      // Quantidade obrigatÛria e v·lida
       if (item.quantity === undefined || item.quantity === null) {
-        errors.push(`Item ${index + 1}: Quantidade √© obrigat√≥ria`);
+        errors.push(`Item ${index + 1}: Quantidade È obrigatÛria`);
       } else if (item.quantity <= 0) {
         errors.push(`Item ${index + 1}: Quantidade deve ser maior que zero`);
       } else if (!Number.isInteger(item.quantity)) {
-        errors.push(`Item ${index + 1}: Quantidade deve ser um n√∫mero inteiro`);
+        errors.push(`Item ${index + 1}: Quantidade deve ser um n˙mero inteiro`);
       }
 
-      // Pre√ßo unit√°rio obrigat√≥rio e v√°lido
+      // PreÁo unit·rio obrigatÛrio e v·lido
       if (item.unit_price === undefined || item.unit_price === null) {
-        errors.push(`Item ${index + 1}: Pre√ßo unit√°rio √© obrigat√≥rio`);
+        errors.push(`Item ${index + 1}: PreÁo unit·rio È obrigatÛrio`);
       } else if (item.unit_price <= 0) {
-        errors.push(`Item ${index + 1}: Pre√ßo unit√°rio deve ser maior que zero`);
+        errors.push(`Item ${index + 1}: PreÁo unit·rio deve ser maior que zero`);
       }
     });
   }
@@ -195,7 +195,7 @@ export const validateSale = (sale: SaleValidation): ValidationResult => {
   };
 };
 
-// Valida√ß√£o de CPF
+// ValidaÁ„o de CPF
 const isValidCPF = (cpf: string): boolean => {
   if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) {
     return false;
@@ -220,7 +220,7 @@ const isValidCPF = (cpf: string): boolean => {
   return true;
 };
 
-// Valida√ß√£o de CNPJ
+// ValidaÁ„o de CNPJ
 const isValidCNPJ = (cnpj: string): boolean => {
   if (cnpj.length !== 14 || /^(\d)\1{13}$/.test(cnpj)) {
     return false;
@@ -256,7 +256,7 @@ const isValidCNPJ = (cnpj: string): boolean => {
   return true;
 };
 
-// Utilit√°rios de formata√ß√£o
+// Utilit·rios de formataÁ„o
 export const formatCurrency = (value: number): string => {
   return new Intl.NumberFormat('pt-BR', {
     style: 'currency',
@@ -284,7 +284,7 @@ export const formatPhone = (phone: string): string => {
   return phone;
 };
 
-// Sanitiza√ß√£o de dados
+// SanitizaÁ„o de dados
 export const sanitizeString = (str: string): string => {
   return str.trim().replace(/[<>"'&]/g, '');
 };

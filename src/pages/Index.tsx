@@ -29,13 +29,13 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
-      {/* Header com informações do usuário - sempre visível quando user existe */}
+      {/* Header com informa��es do usu�rio - sempre vis�vel quando user existe */}
       {user && (
         <div className="w-full flex justify-between items-center p-4 sm:p-6 bg-white/80 backdrop-blur-sm shadow-sm">
           <div className="flex items-center space-x-3">
             <Wine className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
             <div>
-              <h1 className="text-blue-600 font-bold text-base sm:text-lg">Distribuidora</h1>
+              <h1 className="text-blue-600 font-bold text-base sm:text-lg">neg�cio</h1>
               <p className="text-blue-500 text-xs sm:text-sm">do Jeser</p>
             </div>
           </div>
@@ -59,7 +59,7 @@ const Index = () => {
         </div>
       )}
 
-      {/* Conteúdo principal centralizado */}
+      {/* Conte�do principal centralizado */}
       <div 
         className="flex items-center justify-center w-full"
         style={{ 
@@ -77,3 +77,5 @@ const Index = () => {
 };
 
 export default Index;
+
+

@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -17,7 +17,7 @@ const Login = () => {
     email: '',
     password: '',
     name: '',
-    companyName: ''
+    companyName: '',
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -49,7 +49,7 @@ const Login = () => {
       registerData.email,
       registerData.password,
       registerData.name,
-      registerData.companyName
+      registerData.companyName,
     );
 
     if (result.error) {
@@ -72,10 +72,10 @@ const Login = () => {
           </div>
           <div>
             <CardTitle className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">
-              DistribuiPro
+              ComercialPro
             </CardTitle>
             <CardDescription>
-              Plataforma SaaS para gestão de distribuidoras
+              Plataforma SaaS para gestão de negócios
             </CardDescription>
           </div>
         </CardHeader>
@@ -145,11 +145,11 @@ const Login = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="register-company">Nome da distribuidora</Label>
+                  <Label htmlFor="register-company">Nome da empresa</Label>
                   <Input
                     id="register-company"
                     type="text"
-                    placeholder="Ex.: Distribuidora Central"
+                    placeholder="Ex.: Comercial Central"
                     value={registerData.companyName}
                     onChange={(e) => setRegisterData({ ...registerData, companyName: e.target.value })}
                     required

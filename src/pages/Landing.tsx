@@ -1,4 +1,4 @@
-﻿import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle2, Store, ShieldCheck, BarChart3 } from "lucide-react";
@@ -10,7 +10,7 @@ const Landing = () => {
         <div className="mx-auto max-w-6xl px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Store className="h-6 w-6 text-orange-600" />
-            <span className="font-semibold text-slate-900">DistribuiPro</span>
+            <span className="font-semibold text-slate-900">ComercialPro</span>
           </div>
           <div className="flex items-center gap-3">
             <Link to="/login">
@@ -26,11 +26,11 @@ const Landing = () => {
       <main className="mx-auto max-w-6xl px-6 py-14">
         <section className="text-center space-y-5">
           <h1 className="text-4xl md:text-5xl font-bold text-slate-900">
-            Gestão completa para distribuidoras
+            Gestão completa para negócios
           </h1>
           <p className="text-lg text-slate-600 max-w-2xl mx-auto">
             Controle de estoque, vendas à vista e fiado, clientes e relatórios em uma única plataforma.
-            Cada distribuidora com dados isolados e seguros.
+            Cada negócio com dados isolados e seguros.
           </p>
           <div className="flex justify-center gap-3">
             <Link to="/login?tab=register">
@@ -51,11 +51,11 @@ const Landing = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
                 <ShieldCheck className="h-5 w-5 text-emerald-600" />
-                Multilocatário seguro
+                Ambiente multiempresa seguro
               </CardTitle>
             </CardHeader>
             <CardContent className="text-slate-600">
-              Cada administrador enxerga apenas a própria distribuidora.
+              Cada administrador enxerga apenas o próprio negócio.
             </CardContent>
           </Card>
           <Card>

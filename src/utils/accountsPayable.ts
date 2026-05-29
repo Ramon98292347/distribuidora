@@ -1,6 +1,4 @@
-import { AccountsPayable } from '@/types/accountsPayable';
-
-const STORAGE_KEY = 'accounts_payable_items_v1';
+import { AccountsPayable, AccountsPayableStatus } from '@/types/accountsPayable';
 
 const toDateOnly = (value: Date) => value.toISOString().slice(0, 10);
 
@@ -10,34 +8,18 @@ export const getCurrentMonthValue = () => {
   return `${now.getFullYear()}-${month}`;
 };
 
-export const resolveStatus = (item: AccountsPayable): AccountsPayable => {
-  if (item.status === 'paga') {
-    return item;
+export const resolveStatusByDate = (status: AccountsPayableStatus, dueDate: string): AccountsPayableStatus => {
+  if (status === 'paga' || status === 'cancelada') {
+    return status;
   }
 
-  const today = toDateOnly(new Date());
-  if (item.dueDate < today) {
-    return { ...item, status: 'vencida' };
-  }
-
-  return { ...item, status: 'aberta' };
+  return dueDate < toDateOnly(new Date()) ? 'vencida' : 'aberta';
 };
 
-export const loadAccountsPayable = (): AccountsPayable[] => {
-  const raw = localStorage.getItem(STORAGE_KEY);
-  if (!raw) return [];
-
-  try {
-    const parsed = JSON.parse(raw) as AccountsPayable[];
-    return parsed.map(resolveStatus);
-  } catch {
-    return [];
-  }
-};
-
-export const saveAccountsPayable = (items: AccountsPayable[]) => {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(items.map(resolveStatus)));
-};
+export const resolveStatus = (item: AccountsPayable): AccountsPayable => ({
+  ...item,
+  status: resolveStatusByDate(item.status, item.dueDate),
+});
 
 export const getMonthRange = (month: string) => {
   const [year, monthValue] = month.split('-').map(Number);
@@ -48,3 +30,5 @@ export const getMonthRange = (month: string) => {
     end: toDateOnly(end),
   };
 };
+
+export const toDateString = (value: string) => new Date(`${value}T00:00:00`).toLocaleDateString('pt-BR');

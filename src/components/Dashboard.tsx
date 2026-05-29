@@ -43,7 +43,7 @@ const Dashboard: React.FC = () => {
       setLoading(true);
       setError(null);
 
-      // Buscar mÃ©tricas bÃ¡sicas
+      // Buscar métricas básicas
       const [productsResult, clientsResult, salesResult] = await Promise.all([
         supabase.from('products').select('id, stock_quantity, name, category').order('stock_quantity', { ascending: true }),
         supabase.from('clients').select('id'),
@@ -58,7 +58,7 @@ const Dashboard: React.FC = () => {
       const clients = clientsResult.data || [];
       const sales = salesResult.data || [];
 
-      // Calcular mÃ©tricas
+      // Calcular métricas
       const totalRevenue = sales.reduce((sum, sale) => sum + (sale.total_amount || 0), 0);
       const lowStockProducts = products.filter(p => p.stock_quantity < 10).length;
       
@@ -66,7 +66,7 @@ const Dashboard: React.FC = () => {
       const today = new Date().toISOString().split('T')[0];
       const todaySales = sales.filter(sale => sale.sale_date === today).length;
       
-      // Receita do mÃªs atual
+      // Receita do mês atual
       const currentMonth = new Date().getMonth();
       const currentYear = new Date().getFullYear();
       const monthlyRevenue = sales
@@ -109,10 +109,10 @@ const Dashboard: React.FC = () => {
         .slice(0, 5)
         .map(sale => ({
           id: sale.id,
-          client_name: (sale.clients as any)?.name || 'Cliente nÃ£o encontrado',
+          client_name: (sale.clients as any)?.name || 'Cliente não encontrado',
           total_amount: sale.total_amount || 0,
           sale_date: sale.sale_date,
-          items_count: 0 // Seria necessÃ¡rio uma query adicional para contar itens
+          items_count: 0 // Seria necessário uma query adicional para contar itens
         }));
 
       // Alertas de estoque
@@ -180,7 +180,7 @@ const Dashboard: React.FC = () => {
   }
 
   if (!metrics) {
-    return <div>Nenhum dado disponÃ­vel</div>;
+    return <div>Nenhum dado disponível</div>;
   }
 
   return (
@@ -195,7 +195,7 @@ const Dashboard: React.FC = () => {
         </button>
       </div>
 
-      {/* Cards de MÃ©tricas Principais */}
+      {/* Cards de Métricas Principais */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px', marginBottom: '30px' }}>
         <div style={{ backgroundColor: '#e3f2fd', padding: '20px', borderRadius: '8px', textAlign: 'center' }}>
           <h3 style={{ margin: '0 0 10px 0', color: '#1976d2' }}>ğŸ“¦ Produtos</h3>
@@ -218,7 +218,7 @@ const Dashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* MÃ©tricas SecundÃ¡rias */}
+      {/* Métricas Secundárias */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px', marginBottom: '30px' }}>
         <div style={{ backgroundColor: '#ffebee', padding: '20px', borderRadius: '8px', textAlign: 'center' }}>
           <h3 style={{ margin: '0 0 10px 0', color: '#d32f2f' }}>âš ï¸ Estoque Baixo</h3>
@@ -231,12 +231,12 @@ const Dashboard: React.FC = () => {
         </div>
         
         <div style={{ backgroundColor: '#f1f8e9', padding: '20px', borderRadius: '8px', textAlign: 'center' }}>
-          <h3 style={{ margin: '0 0 10px 0', color: '#689f38' }}>ğŸ“ˆ Receita do MÃªs</h3>
+          <h3 style={{ margin: '0 0 10px 0', color: '#689f38' }}>ğŸ“ˆ Receita do Mês</h3>
           <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#689f38' }}>{formatCurrency(metrics.monthlyRevenue)}</div>
         </div>
       </div>
 
-      {/* SeÃ§Ãµes de Detalhes */}
+      {/* Seções de Detalhes */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '30px' }}>
         
         {/* Produtos Mais Vendidos */}

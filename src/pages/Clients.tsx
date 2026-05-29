@@ -44,7 +44,7 @@ const Clients = () => {
       updateClient(editingClient.id, clientData);
       toast({
         title: "Cliente atualizado!",
-        description: "As informações do cliente foram atualizadas com sucesso",
+        description: "As informa��es do cliente foram atualizadas com sucesso",
       });
     } else {
       addClient(clientData);
@@ -86,7 +86,7 @@ const Clients = () => {
 
     deleteClient(clientId);
     toast({
-      title: "Cliente excluído!",
+      title: "Cliente exclu�do!",
       description: "O cliente foi removido do sistema",
     });
   };
@@ -95,8 +95,8 @@ const Clients = () => {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Gestão de Clientes</h1>
-          <p className="text-gray-600">Gerencie os clientes da distribuidora</p>
+          <h1 className="text-2xl font-bold text-gray-900">Gest�o de Clientes</h1>
+          <p className="text-gray-600">Gerencie os clientes da neg�cio</p>
         </div>
 
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -112,7 +112,7 @@ const Clients = () => {
                 {editingClient ? 'Editar Cliente' : 'Novo Cliente'}
               </DialogTitle>
               <DialogDescription>
-                {editingClient ? 'Atualize as informações do cliente' : 'Adicione um novo cliente ao sistema'}
+                {editingClient ? 'Atualize as informa��es do cliente' : 'Adicione um novo cliente ao sistema'}
               </DialogDescription>
             </DialogHeader>
 
@@ -123,7 +123,7 @@ const Clients = () => {
                   id="name"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder="Ex: João Silva"
+                  placeholder="Ex: Jo�o Silva"
                   required
                 />
               </div>
@@ -151,7 +151,7 @@ const Clients = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="address">Endereço (opcional)</Label>
+                <Label htmlFor="address">Endere�o (opcional)</Label>
                 <Input
                   id="address"
                   value={formData.address}
@@ -281,3 +281,5 @@ const Clients = () => {
 };
 
 export default Clients;
+
+

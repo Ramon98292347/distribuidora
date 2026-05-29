@@ -24,7 +24,7 @@ const Reports = () => {
             Acesso Restrito
           </h3>
           <p className="text-red-600">
-            Apenas administradores podem acessar os relatórios.
+            Apenas administradores podem acessar os relat�rios.
           </p>
         </CardContent>
       </Card>
@@ -42,7 +42,7 @@ const Reports = () => {
     return true;
   });
 
-  // Dados para gráfico de produtos mais vendidos
+  // Dados para gr�fico de produtos mais vendidos
   const productSales = filteredSales.flatMap(sale => sale.products);
   const productStats = productSales.reduce((acc, item) => {
     const existing = acc.find(p => p.name === item.productName);
@@ -63,20 +63,20 @@ const Reports = () => {
     .sort((a, b) => b.quantity - a.quantity)
     .slice(0, 10);
 
-  // Dados para gráfico de formas de pagamento
+  // Dados para gr�fico de formas de pagamento
   const paymentStats = filteredSales.reduce((acc, sale) => {
     acc[sale.paymentMethod] = (acc[sale.paymentMethod] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);
 
   const paymentData = Object.entries(paymentStats).map(([method, count]) => ({
-    name: method === 'dinheiro' ? 'Dinheiro' : method === 'pix' ? 'PIX' : 'Cartão',
+    name: method === 'dinheiro' ? 'Dinheiro' : method === 'pix' ? 'PIX' : 'Cart�o',
     value: count
   }));
 
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
-  // Relatório de vendas por data
+  // Relat�rio de vendas por data
   const salesByDate = filteredSales.reduce((acc, sale) => {
     const date = new Date(sale.date).toLocaleDateString('pt-BR');
     acc[date] = (acc[date] || 0) + sale.total;
@@ -95,8 +95,8 @@ const Reports = () => {
 
   const exportReport = () => {
     toast({
-      title: "Relatório exportado!",
-      description: "O relatório foi salvo com sucesso",
+      title: "Relat�rio exportado!",
+      description: "O relat�rio foi salvo com sucesso",
     });
   };
 
@@ -115,7 +115,7 @@ const Reports = () => {
             <span>Filtros de Data</span>
           </CardTitle>
           <CardDescription className="text-sm">
-            Filtre os relatórios por período específico
+            Filtre os relat�rios por per�odo espec�fico
           </CardDescription>
         </CardHeader>
         <CardContent className="pt-0">
@@ -154,7 +154,7 @@ const Reports = () => {
         </CardContent>
       </Card>
 
-      {/* Métricas Resumo */}
+      {/* M�tricas Resumo */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card className="shadow-lg border-0">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -165,7 +165,7 @@ const Reports = () => {
           </CardHeader>
           <CardContent className="pt-0">
             <div className="text-2xl font-bold text-gray-900">{totalSales}</div>
-            <p className="text-xs text-gray-600 mt-0.5">vendas no período</p>
+            <p className="text-xs text-gray-600 mt-0.5">vendas no per�odo</p>
           </CardContent>
         </Card>
 
@@ -184,7 +184,7 @@ const Reports = () => {
 
         <Card className="shadow-lg border-0">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Ticket Médio</CardTitle>
+            <CardTitle className="text-sm font-medium">Ticket M�dio</CardTitle>
             <div className="p-1.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg">
               <CalendarDays className="h-4 w-4 text-white" />
             </div>
@@ -193,12 +193,12 @@ const Reports = () => {
             <div className="text-2xl font-bold text-gray-900">
               R$ {totalSales > 0 ? (totalRevenue / totalSales).toFixed(2) : '0.00'}
             </div>
-            <p className="text-xs text-gray-600 mt-0.5">valor médio por venda</p>
+            <p className="text-xs text-gray-600 mt-0.5">valor m�dio por venda</p>
           </CardContent>
         </Card>
       </div>
 
-      {/* Gráficos */}
+      {/* Gr�ficos */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Produtos Mais Vendidos */}
         <Card className="shadow-lg border-0">
@@ -229,7 +229,7 @@ const Reports = () => {
         <Card className="shadow-lg border-0">
           <CardHeader className="pb-3">
             <CardTitle className="text-lg">Formas de Pagamento</CardTitle>
-            <CardDescription className="text-sm">Distribuição dos métodos de pagamento</CardDescription>
+            <CardDescription className="text-sm">Distribui��o dos m�todos de pagamento</CardDescription>
           </CardHeader>
           <CardContent className="pt-0">
             <ResponsiveContainer width="100%" height={280}>
@@ -258,7 +258,7 @@ const Reports = () => {
       {/* Lista de Vendas */}
       <Card className="shadow-lg border-0">
         <CardHeader className="pb-3">
-          <CardTitle className="text-lg">Histórico de Vendas</CardTitle>
+          <CardTitle className="text-lg">Hist�rico de Vendas</CardTitle>
           <CardDescription className="text-sm">
             {filteredSales.length} vendas encontradas
           </CardDescription>
@@ -293,7 +293,7 @@ const Reports = () => {
                     <td className="py-2 px-3 text-sm">
                       <span className="px-2 py-0.5 rounded-full text-xs bg-gradient-to-r from-blue-50 to-purple-50 text-blue-700 border border-blue-200">
                         {sale.paymentMethod === 'dinheiro' ? '💵 Dinheiro' : 
-                         sale.paymentMethod === 'pix' ? '📱 PIX' : '💳 Cartão'}
+                         sale.paymentMethod === 'pix' ? '📱 PIX' : '💳 Cart�o'}
                       </span>
                     </td>
                   </tr>
@@ -304,7 +304,7 @@ const Reports = () => {
             {filteredSales.length === 0 && (
               <div className="text-center py-6 text-gray-500">
                 <FileText className="h-10 w-10 mx-auto mb-3 opacity-50" />
-                <p className="text-sm">Nenhuma venda encontrada no período selecionado</p>
+                <p className="text-sm">Nenhuma venda encontrada no per�odo selecionado</p>
               </div>
             )}
           </div>
@@ -315,3 +315,4 @@ const Reports = () => {
 };
 
 export default Reports;
+

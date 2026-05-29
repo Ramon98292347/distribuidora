@@ -18,10 +18,10 @@ const Receipt = () => {
       <Card className="shadow-lg border-0 border-red-200 bg-red-50">
         <CardContent className="p-8 text-center">
           <h3 className="text-lg font-medium text-red-800 mb-2">
-            Recibo não encontrado
+            Recibo n�o encontrado
           </h3>
           <p className="text-red-600 mb-4">
-            O recibo solicitado não foi encontrado.
+            O recibo solicitado n�o foi encontrado.
           </p>
           <Button onClick={() => navigate('/sales')} variant="outline">
             Voltar para Vendas
@@ -37,8 +37,8 @@ const Receipt = () => {
   const handlePrint = () => {
     window.print();
     toast({
-      title: "Preparando impressão",
-      description: "O recibo será enviado para a impressora",
+      title: "Preparando impress�o",
+      description: "O recibo ser� enviado para a impressora",
     });
   };
 
@@ -51,7 +51,7 @@ const Receipt = () => {
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
-      {/* Ações */}
+      {/* A��es */}
       <div className="flex justify-between items-center print:hidden">
         <Button
           variant="outline"
@@ -91,15 +91,15 @@ const Receipt = () => {
             </div>
           </div>
           <CardTitle className="text-2xl font-bold">
-            DistribuiPro
+            ComercialPro
           </CardTitle>
           <p className="text-blue-100 print:text-gray-600">
-            Sua distribuidora de confiança
+            Sua neg�cio de confian�a
           </p>
         </CardHeader>
 
         <CardContent className="p-8">
-          {/* Informações da Venda */}
+          {/* Informa��es da Venda */}
           <div className="grid grid-cols-2 gap-4 mb-8 p-4 bg-gradient-to-r from-gray-50 to-blue-50 rounded-lg print:bg-gray-50">
             <div>
               <p className="text-sm font-medium text-gray-700">Data e Hora:</p>
@@ -116,7 +116,7 @@ const Receipt = () => {
             <div className="flex justify-between items-center">
               <span className="font-medium text-gray-700">Tipo de Venda:</span>
               <span className="font-semibold text-gray-900">
-                {isCreditSale ? '📝 Venda Fiado' : '💰 Venda à Vista'}
+                {isCreditSale ? '📝 Venda Fiado' : '💰 Venda � Vista'}
               </span>
             </div>
             {isCreditSale && sale.clientName && (
@@ -168,14 +168,14 @@ const Receipt = () => {
             </div>
           </div>
 
-          {/* Forma de Pagamento (apenas para vendas à vista) */}
+          {/* Forma de Pagamento (apenas para vendas � vista) */}
           {isRegularSale && (
             <div className="mb-8 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border border-blue-200 print:bg-gray-50">
               <div className="flex justify-between items-center">
                 <span className="font-medium text-gray-700">Forma de Pagamento:</span>
                 <span className="font-semibold text-gray-900 capitalize">
                   {sale.paymentMethod === 'dinheiro' ? '💵 Dinheiro' : 
-                   sale.paymentMethod === 'pix' ? '📱 PIX' : '💳 Cartão'}
+                   sale.paymentMethod === 'pix' ? '📱 PIX' : '💳 Cart�o'}
                 </span>
               </div>
             </div>
@@ -192,7 +192,7 @@ const Receipt = () => {
               </div>
               {sale.description && (
                 <div className="mt-2 pt-2 border-t border-orange-200">
-                  <span className="text-sm font-medium text-gray-700">Descrição: </span>
+                  <span className="text-sm font-medium text-gray-700">Descri��o: </span>
                   <span className="text-sm text-gray-900">{sale.description}</span>
                 </div>
               )}
@@ -208,20 +208,20 @@ const Receipt = () => {
           {/* Mensagem de Agradecimento */}
           <div className="text-center p-6 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg print:bg-gray-100 print:text-gray-900">
             <h3 className="text-lg font-semibold mb-2">
-              🙏 Obrigado pela preferência!
+              🙏 Obrigado pela prefer�ncia!
             </h3>
             <p className="text-sm">
               {isCreditSale && !sale.isPaid 
-                ? 'Aguardamos o pagamento. A DistribuiPro agradece sua confiança.'
-                : 'Volte sempre. A DistribuiPro agradece sua confiança.'
+                ? 'Aguardamos o pagamento. A ComercialPro agradece sua confian�a.'
+                : 'Volte sempre. A ComercialPro agradece sua confian�a.'
               }
             </p>
           </div>
 
-          {/* Rodapé */}
+          {/* Rodap� */}
           <div className="mt-8 pt-4 border-t border-gray-200 text-center text-xs text-gray-500">
             <p>Este recibo foi gerado automaticamente pelo sistema</p>
-            <p>DistribuiPro - Sistema de Gestão v1.0</p>
+            <p>ComercialPro - Sistema de Gest�o v1.0</p>
           </div>
         </CardContent>
       </Card>
@@ -230,3 +230,5 @@ const Receipt = () => {
 };
 
 export default Receipt;
+
+
