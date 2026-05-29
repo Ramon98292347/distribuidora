@@ -8,10 +8,12 @@ import { Button } from '@/components/ui/button';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { CalendarDays, FileText, TrendingUp, Filter, Download } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Reports = () => {
   const { sales } = useData();
   const { user } = useAuth();
+  const isMobile = useIsMobile();
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
 
@@ -103,8 +105,8 @@ const Reports = () => {
               <Label htmlFor="endDate" className="text-sm">Data Final</Label>
               <Input id="endDate" type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} className="h-9" />
             </div>
-            <Button onClick={clearFilters} variant="outline" className="h-9">Limpar</Button>
-            <Button onClick={exportReport} className="h-9 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600">
+            <Button onClick={clearFilters} variant="outline" className="h-9 w-full">Limpar</Button>
+            <Button onClick={exportReport} className="h-9 w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600">
               <Download className="h-4 w-4 mr-2" />
               Exportar
             </Button>
@@ -160,10 +162,17 @@ const Reports = () => {
             <CardDescription className="text-sm">Top 10 produtos por quantidade vendida</CardDescription>
           </CardHeader>
           <CardContent className="pt-0">
-            <ResponsiveContainer width="100%" height={280}>
+            <ResponsiveContainer width="100%" height={isMobile ? 220 : 280}>
               <BarChart data={topProducts}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" tick={{ fontSize: 11 }} angle={-45} textAnchor="end" height={70} />
+                <XAxis
+                  dataKey="name"
+                  tick={{ fontSize: 11 }}
+                  angle={isMobile ? -30 : -45}
+                  textAnchor="end"
+                  height={isMobile ? 55 : 70}
+                  interval={0}
+                />
                 <YAxis tick={{ fontSize: 11 }} />
                 <Tooltip />
                 <Bar dataKey="quantity" fill="#8884d8" />
@@ -178,15 +187,15 @@ const Reports = () => {
             <CardDescription className="text-sm">Distribuição dos métodos de pagamento</CardDescription>
           </CardHeader>
           <CardContent className="pt-0">
-            <ResponsiveContainer width="100%" height={280}>
+            <ResponsiveContainer width="100%" height={isMobile ? 220 : 280}>
               <PieChart>
                 <Pie
                   data={paymentData}
                   cx="50%"
                   cy="50%"
                   labelLine={false}
-                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                  outerRadius={70}
+                  label={isMobile ? false : ({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                  outerRadius={isMobile ? 58 : 70}
                   fill="#8884d8"
                   dataKey="value"
                 >
@@ -207,8 +216,8 @@ const Reports = () => {
           <CardDescription className="text-sm">{filteredSales.length} vendas encontradas</CardDescription>
         </CardHeader>
         <CardContent className="pt-0">
-          <div className="overflow-x-auto">
-            <table className="w-full">
+          <div className="hidden md:block overflow-x-auto">
+            <table className="w-full min-w-[760px]">
               <thead>
                 <tr className="border-b border-gray-200">
                   <th className="text-left py-2 px-3 font-medium text-gray-700 text-sm">Data/Hora</th>
@@ -235,13 +244,32 @@ const Reports = () => {
               </tbody>
             </table>
 
-            {filteredSales.length === 0 && (
-              <div className="text-center py-6 text-gray-500">
-                <FileText className="h-10 w-10 mx-auto mb-3 opacity-50" />
-                <p className="text-sm">Nenhuma venda encontrada no período selecionado</p>
-              </div>
-            )}
           </div>
+
+          <div className="md:hidden space-y-3">
+            {filteredSales.map((sale) => (
+              <div key={sale.id} className="rounded-lg border border-gray-200 p-3 bg-white">
+                <p className="text-sm font-medium text-gray-900">{new Date(sale.date).toLocaleString('pt-BR')}</p>
+                <p className="text-xs text-gray-600 mt-1">{sale.products.map((p) => p.productName).join(', ')}</p>
+                <div className="mt-2 flex items-center justify-between">
+                  <span className="text-xs text-gray-600">{sale.products.reduce((sum, p) => sum + p.quantity, 0)} itens</span>
+                  <span className="text-sm font-semibold text-green-600">R$ {sale.total.toFixed(2)}</span>
+                </div>
+                <div className="mt-2">
+                  <span className="px-2 py-0.5 rounded-full text-xs bg-gradient-to-r from-blue-50 to-purple-50 text-blue-700 border border-blue-200">
+                    {sale.paymentMethod === 'dinheiro' ? 'Dinheiro' : sale.paymentMethod === 'pix' ? 'PIX' : 'Cartão'}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {filteredSales.length === 0 && (
+            <div className="text-center py-6 text-gray-500">
+              <FileText className="h-10 w-10 mx-auto mb-3 opacity-50" />
+              <p className="text-sm">Nenhuma venda encontrada no período selecionado</p>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>
