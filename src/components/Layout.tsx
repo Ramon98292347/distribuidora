@@ -118,9 +118,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <div className="min-h-screen flex w-full">
           <AppSidebar />
           <SidebarInset className="flex-1">
-            <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
-              <SidebarTrigger className="hidden lg:inline-flex" />
-              <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
+            <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 xl:px-8">
+              <SidebarTrigger className="hidden xl:inline-flex" />
+              <div className="flex flex-1 gap-x-4 self-stretch xl:gap-x-6">
                 <div className="flex flex-1 items-center">
                   <h2 className="text-xl font-semibold text-gray-900">
                     {navigation.find((item) => item.href === location.pathname)?.name || 'Dashboard'}
@@ -129,14 +129,14 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
               </div>
             </header>
 
-            <main className="py-4 pb-24 lg:pb-8 lg:py-8">
-              <div className="w-full px-4 sm:px-6 lg:px-8">{children}</div>
+            <main className="py-4 pb-24 xl:pb-8 xl:py-8">
+              <div className="w-full px-4 sm:px-6 xl:px-8">{children}</div>
             </main>
           </SidebarInset>
         </div>
       </SidebarProvider>
 
-      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/90 lg:hidden">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/90 xl:hidden">
         <ul className="grid grid-cols-5">
           {mobilePrimaryNavigation.map((item) => {
             const isActive = location.pathname === item.href;
@@ -191,3 +191,4 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default Layout;
+
