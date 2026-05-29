@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -14,6 +13,7 @@ import Clients from "./pages/Clients";
 import Sales from "./pages/Sales";
 import Reports from "./pages/Reports";
 import Receipt from "./pages/Receipt";
+import AccountsPayable from "./pages/AccountsPayable";
 import Layout from "./components/Layout";
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -28,36 +28,62 @@ const AppRoutes = () => {
     <Routes>
       <Route path="/" element={<Landing />} />
       <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <Login />} />
-      <Route path="/dashboard" element={
-        <ProtectedRoute>
-          <Dashboard />
-        </ProtectedRoute>
-      } />
-      <Route path="/products" element={
-        <ProtectedRoute>
-          <Products />
-        </ProtectedRoute>
-      } />
-      <Route path="/clients" element={
-        <ProtectedRoute>
-          <Clients />
-        </ProtectedRoute>
-      } />
-      <Route path="/sales" element={
-        <ProtectedRoute>
-          <Sales />
-        </ProtectedRoute>
-      } />
-      <Route path="/reports" element={
-        <ProtectedRoute>
-          <Reports />
-        </ProtectedRoute>
-      } />
-      <Route path="/receipt/:saleId" element={
-        <ProtectedRoute>
-          <Receipt />
-        </ProtectedRoute>
-      } />
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/products"
+        element={
+          <ProtectedRoute>
+            <Products />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/clients"
+        element={
+          <ProtectedRoute>
+            <Clients />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/sales"
+        element={
+          <ProtectedRoute>
+            <Sales />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/accounts-payable"
+        element={
+          <ProtectedRoute>
+            <AccountsPayable />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/reports"
+        element={
+          <ProtectedRoute>
+            <Reports />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/receipt/:saleId"
+        element={
+          <ProtectedRoute>
+            <Receipt />
+          </ProtectedRoute>
+        }
+      />
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );

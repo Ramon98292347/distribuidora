@@ -9,7 +9,8 @@ import {
   BarChart3, 
   LogOut, 
   Wine,
-  Users
+  Users,
+  HandCoins
 } from 'lucide-react';
 import {
   Sidebar,
@@ -41,6 +42,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     { name: 'Produtos', href: '/products', icon: Package },
     { name: 'Clientes', href: '/clients', icon: Users },
     { name: 'Vendas', href: '/sales', icon: ShoppingCart },
+    { name: 'Contas a Pagar', href: '/accounts-payable', icon: HandCoins },
     { name: 'Relatórios', href: '/reports', icon: BarChart3, adminOnly: true },
   ];
 
@@ -158,3 +160,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default Layout;
+
+
+
+
+
