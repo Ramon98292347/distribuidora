@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Plus, Upload, Image } from 'lucide-react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 interface Product {
   id: string;
@@ -43,6 +43,8 @@ const ProductDialog = ({
   isAdmin
 }: ProductDialogProps) => {
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const galleryInputRef = useRef<HTMLInputElement>(null);
+  const cameraInputRef = useRef<HTMLInputElement>(null);
 
   if (!isAdmin) return null;
 
@@ -78,7 +80,7 @@ const ProductDialog = ({
             {editingProduct ? 'Editar Produto' : 'Novo Produto'}
           </DialogTitle>
           <DialogDescription>
-            {editingProduct ? 'Atualize as informa??es do produto' : 'Adicione um novo produto ao estoque'}
+            {editingProduct ? 'Atualize as informações do produto' : 'Adicione um novo produto ao estoque'}
           </DialogDescription>
         </DialogHeader>
 
@@ -140,22 +142,58 @@ const ProductDialog = ({
                   </Button>
                 </div>
                 <Input
+                  ref={galleryInputRef}
                   type="file"
                   accept="image/*"
                   onChange={handleImageChange}
                   className="cursor-pointer"
                 />
+                <Input
+                  ref={cameraInputRef}
+                  type="file"
+                  accept="image/*"
+                  capture="environment"
+                  onChange={handleImageChange}
+                  className="hidden"
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => cameraInputRef.current?.click()}
+                >
+                  Tirar foto (celular)
+                </Button>
               </div>
             ) : (
               <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
                 <Image className="h-12 w-12 mx-auto text-gray-400 mb-2" />
                 <p className="text-sm text-gray-600 mb-2">Adicionar imagem do produto</p>
-                <Input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  className="cursor-pointer"
-                />
+                <div className="space-y-2">
+                  <Input
+                    ref={galleryInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="cursor-pointer"
+                  />
+                  <Input
+                    ref={cameraInputRef}
+                    type="file"
+                    accept="image/*"
+                    capture="environment"
+                    onChange={handleImageChange}
+                    className="hidden"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full"
+                    onClick={() => cameraInputRef.current?.click()}
+                  >
+                    Tirar foto (celular)
+                  </Button>
+                </div>
               </div>
             )}
           </div>
@@ -175,4 +213,3 @@ const ProductDialog = ({
 };
 
 export default ProductDialog;
-
