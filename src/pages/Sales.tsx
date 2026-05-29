@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useData } from '@/contexts/DataContext';
 import { useClients } from '@/contexts/ClientContext';
 import { useAuth } from '@/contexts/AuthContext';
@@ -44,7 +44,7 @@ const Sales = () => {
     if (product.stock < quantity) {
       toast({
         title: "Estoque insuficiente",
-        description: `Apenas ${product.stock} unidades dispon�veis`,
+        description: `Apenas ${product.stock} unidades disponíveis`,
         variant: "destructive",
       });
       return;
@@ -57,7 +57,7 @@ const Sales = () => {
       if (product.stock < totalQuantity) {
         toast({
           title: "Estoque insuficiente",
-          description: `Total solicitado (${totalQuantity}) excede o estoque dispon�vel (${product.stock})`,
+          description: `Total solicitado (${totalQuantity}) excede o estoque disponível (${product.stock})`,
           variant: "destructive",
         });
         return;
@@ -96,7 +96,7 @@ const Sales = () => {
     if (product && newQuantity > product.stock) {
       toast({
         title: "Estoque insuficiente",
-        description: `Apenas ${product.stock} unidades dispon�veis`,
+        description: `Apenas ${product.stock} unidades disponíveis`,
         variant: "destructive",
       });
       return;
@@ -140,8 +140,8 @@ const Sales = () => {
     try {
       await addSale(saleData);
       
-      // Encontrar a venda rec�m-criada para obter o ID
-      const latestSale = sales[0]; // Assumindo que a venda mais recente ser� a primeira
+      // Encontrar a venda recém-criada para obter o ID
+      const latestSale = sales[0]; // Assumindo que a venda mais recente será a primeira
       
       setCart([]);
       setSelectedClient('');
@@ -179,7 +179,7 @@ const Sales = () => {
 
     if (!selectedClient) {
       toast({
-        title: "Cliente obrigat�rio",
+        title: "Cliente obrigatório",
         description: "Selecione um cliente para vendas fiado",
         variant: "destructive",
       });
@@ -241,14 +241,14 @@ const Sales = () => {
       if (saleType === 'regular') {
         await deleteSale(saleId);
         toast({
-          title: "Recibo exclu�do",
-          description: "Recibo de venda � vista exclu�do com sucesso",
+          title: "Recibo excluído",
+          description: "Recibo de venda à vista excluído com sucesso",
         });
       } else {
         await deleteCreditSale(saleId);
         toast({
-          title: "Recibo exclu�do",
-          description: "Recibo de venda fiado exclu�do com sucesso",
+          title: "Recibo excluído",
+          description: "Recibo de venda fiado excluído com sucesso",
         });
       }
     } catch (error) {
@@ -277,7 +277,7 @@ const Sales = () => {
       return acc;
     }, {} as Record<string, { clientName: string; sales: any[]; total: number }>);
 
-  // Combinar todas as vendas (� vista e fiado) para mostrar os recibos
+  // Combinar todas as vendas (à vista e fiado) para mostrar os recibos
   const allSales = [
     ...sales.map(sale => ({ ...sale, type: 'regular' as const })),
     ...creditSales.map(sale => ({ ...sale, type: 'credit' as const }))
@@ -288,13 +288,13 @@ const Sales = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Vendas</h1>
-          <p className="text-gray-600">Gerencie vendas � vista e fiado</p>
+          <p className="text-gray-600">Gerencie vendas à vista e fiado</p>
         </div>
       </div>
 
       <Tabs defaultValue="cash" className="w-full">
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="cash">Venda � Vista</TabsTrigger>
+          <TabsTrigger value="cash">Venda à Vista</TabsTrigger>
           <TabsTrigger value="credit">Venda Fiado</TabsTrigger>
           <TabsTrigger value="pending">Pendentes</TabsTrigger>
           <TabsTrigger value="receipts">Recibos</TabsTrigger>
@@ -413,12 +413,12 @@ const Sales = () => {
             </CardContent>
           </Card>
 
-          {/* Finaliza��o da venda � vista */}
+          {/* Finalização da venda à vista */}
           <Card className="shadow-lg border-0">
             <CardHeader>
               <CardTitle>Finalizar Venda</CardTitle>
               <CardDescription>
-                Selecione o m�todo de pagamento e cliente (opcional)
+                Selecione o método de pagamento e cliente (opcional)
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -439,7 +439,7 @@ const Sales = () => {
               </div>
 
               <div className="space-y-2">
-                <Label>M�todo de Pagamento</Label>
+                <Label>Método de Pagamento</Label>
                 <div className="grid grid-cols-3 gap-2">
                   <Button
                     variant={paymentMethod === 'dinheiro' ? 'default' : 'outline'}
@@ -463,7 +463,7 @@ const Sales = () => {
                     className="flex flex-col items-center p-4 h-auto"
                   >
                     <CreditCard className="h-6 w-6 mb-2" />
-                    <span className="text-sm">Cart�o</span>
+                    <span className="text-sm">Cartão</span>
                   </Button>
                 </div>
               </div>
@@ -474,7 +474,7 @@ const Sales = () => {
                     Total: R$ {total.toFixed(2)}
                   </p>
                   <p className="text-sm text-gray-600">
-                    Pagamento: {paymentMethod === 'dinheiro' ? 'Dinheiro' : paymentMethod === 'pix' ? 'PIX' : 'Cart�o'}
+                    Pagamento: {paymentMethod === 'dinheiro' ? 'Dinheiro' : paymentMethod === 'pix' ? 'PIX' : 'Cartão'}
                   </p>
                 </div>
                 <Button 
@@ -506,7 +506,7 @@ const Sales = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label>Cliente (Obrigat�rio)</Label>
+                <Label>Cliente (Obrigatório)</Label>
                 <Select value={selectedClient} onValueChange={setSelectedClient}>
                   <SelectTrigger>
                     <SelectValue placeholder="Selecione um cliente" />
@@ -549,7 +549,7 @@ const Sales = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="creditDescription">Descri��o (Opcional)</Label>
+                <Label htmlFor="creditDescription">Descrição (Opcional)</Label>
                 <Input
                   id="creditDescription"
                   placeholder="Ex: Compra de bebidas para festa"
@@ -655,7 +655,7 @@ const Sales = () => {
                   Nenhuma venda fiado pendente
                 </h3>
                 <p className="text-gray-600">
-                  Todas as vendas fiado foram quitadas ou n�o h� vendas registradas.
+                  Todas as vendas fiado foram quitadas ou não há vendas registradas.
                 </p>
               </CardContent>
             </Card>
@@ -744,7 +744,7 @@ const Sales = () => {
                           <Input
                             value={editDescription}
                             onChange={(e) => setEditDescription(e.target.value)}
-                            placeholder="Descri��o da venda"
+                            placeholder="Descrição da venda"
                             className="mt-2"
                           />
                         ) : (
@@ -775,7 +775,7 @@ const Sales = () => {
         </TabsContent>
 
         <TabsContent value="receipts" className="space-y-6">
-          {/* Nova aba para visualizar todos os recibos com op��o de excluir */}
+          {/* Nova aba para visualizar todos os recibos com opção de excluir */}
           <Card className="shadow-lg border-0">
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
@@ -785,7 +785,7 @@ const Sales = () => {
                 <span>Todos os Recibos</span>
               </CardTitle>
               <CardDescription>
-                Visualize todos os recibos emitidos (vendas � vista e fiado)
+                Visualize todos os recibos emitidos (vendas à vista e fiado)
               </CardDescription>
             </CardHeader>
             <CardContent>
