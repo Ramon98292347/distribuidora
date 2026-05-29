@@ -52,6 +52,10 @@ const Receipt = () => {
       html, body { margin: 0; padding: 0; background: #ffffff; }
       body { display: flex; justify-content: center; }
       .receipt-wrap { width: 190mm; max-width: 100%; }
+      .receipt-wrap, .receipt-wrap * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
     </style>
   </head>
   <body>
@@ -165,18 +169,18 @@ const Receipt = () => {
 
       <div ref={receiptRef}>
       <Card className="shadow-lg border-0 print:shadow-none print:border print:border-gray-300">
-        <CardHeader className="text-center pb-6 bg-gradient-to-r from-blue-600 to-purple-600 text-white print:bg-white print:text-black">
+        <CardHeader className="text-center pb-6 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
           <div className="flex justify-center mb-4">
-            <div className="p-4 bg-white/20 rounded-full print:bg-gray-100">
-              <Wine className="h-8 w-8 text-white print:text-gray-700" />
+            <div className="p-4 bg-white/20 rounded-full">
+              <Wine className="h-8 w-8 text-white" />
             </div>
           </div>
           <CardTitle className="text-2xl font-bold">ComercialPro</CardTitle>
-          <p className="text-blue-100 print:text-gray-600">Seu negócio de confiança</p>
+          <p className="text-blue-100">Seu negócio de confiança</p>
         </CardHeader>
 
         <CardContent className="p-8">
-          <div className="grid grid-cols-2 gap-4 mb-8 p-4 bg-gradient-to-r from-gray-50 to-blue-50 rounded-lg print:bg-gray-50">
+          <div className="grid grid-cols-2 gap-4 mb-8 p-4 bg-gradient-to-r from-gray-50 to-blue-50 rounded-lg">
             <div>
               <p className="text-sm font-medium text-gray-700">Data e Hora:</p>
               <p className="text-gray-900">{new Date(sale.date).toLocaleString('pt-BR')}</p>
@@ -187,7 +191,7 @@ const Receipt = () => {
             </div>
           </div>
 
-          <div className="mb-8 p-4 bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg border border-amber-200 print:bg-gray-50">
+          <div className="mb-8 p-4 bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg border border-amber-200">
             <div className="flex justify-between items-center">
               <span className="font-medium text-gray-700">Tipo de Venda:</span>
               <span className="font-semibold text-gray-900">{isCreditSale ? 'Venda Fiado' : 'Venda à Vista'}</span>
@@ -217,15 +221,15 @@ const Receipt = () => {
             </div>
           </div>
 
-          <div className="mb-8 p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border border-green-200 print:bg-gray-50">
+          <div className="mb-8 p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border border-green-200">
             <div className="flex justify-between items-center">
               <span className="text-lg font-semibold text-gray-900">Total da Venda:</span>
-              <span className="text-2xl font-bold text-green-600 print:text-gray-900">R$ {sale.total.toFixed(2)}</span>
+              <span className="text-2xl font-bold text-green-600">R$ {sale.total.toFixed(2)}</span>
             </div>
           </div>
 
           {isRegularSale && (
-            <div className="mb-8 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border border-blue-200 print:bg-gray-50">
+            <div className="mb-8 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border border-blue-200">
               <div className="flex justify-between items-center">
                 <span className="font-medium text-gray-700">Forma de Pagamento:</span>
                 <span className="font-semibold text-gray-900 capitalize">
@@ -236,10 +240,10 @@ const Receipt = () => {
           )}
 
           {isCreditSale && (
-            <div className="mb-8 p-4 bg-gradient-to-r from-orange-50 to-red-50 rounded-lg border border-orange-200 print:bg-gray-50">
+            <div className="mb-8 p-4 bg-gradient-to-r from-orange-50 to-red-50 rounded-lg border border-orange-200">
               <div className="flex justify-between items-center">
                 <span className="font-medium text-gray-700">Status:</span>
-                <span className={`font-semibold ${sale.isPaid ? 'text-green-600' : 'text-orange-600'} print:text-gray-900`}>
+                <span className={`font-semibold ${sale.isPaid ? 'text-green-600' : 'text-orange-600'}`}>
                   {sale.isPaid ? 'Pago' : 'Pendente'}
                 </span>
               </div>
@@ -258,7 +262,7 @@ const Receipt = () => {
             </div>
           )}
 
-          <div className="text-center p-6 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg print:bg-gray-100 print:text-gray-900">
+          <div className="text-center p-6 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg">
             <h3 className="text-lg font-semibold mb-2">Obrigado pela preferência!</h3>
             <p className="text-sm">
               {isCreditSale && !sale.isPaid
